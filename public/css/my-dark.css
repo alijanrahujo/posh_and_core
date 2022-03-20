@@ -1,0 +1,68 @@
+.header > .navbar
+{
+    background-color: #2a2a28 !important;
+    color: white !important;
+}
+.header #toggle-btn, .header .nav-item a
+{
+    color: white !important;
+}
+
+nav.navbar .nav-item a i, nav.navbar .btn-link i {
+    color: #ffffff;
+}
+
+
+nav.navbar .nav-item a:hover, nav.navbar .btn-link i:hover {
+    background-color: #555555;
+}
+
+.side-navbar {
+    background-color: #ccc;
+    top: 62px;
+    padding-top: 10px;
+}
+
+.side-navbar li a i {
+    color: #000;
+}
+
+#content
+{
+    //background-color: #e2e2e2;
+}
+
+.side-navbar li ul {
+    background: #747471;
+
+}
+
+.side-navbar li ul li a {
+    color: white;
+    display: block !important;
+}
+
+.right-sidebar {
+    min-width: 250px;
+    width: auto;
+    height: 190px !important;
+    background-color: #747471;
+    margin-top: 62px;
+    padding: 0px;
+}
+
+.logout {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+
+.logout:hover {
+    background-color: #555555 !important;
+}
+
+
+.welcome
+{
+    display: none !important;
+}
