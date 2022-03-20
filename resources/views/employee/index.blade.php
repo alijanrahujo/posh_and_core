@@ -783,6 +783,7 @@ function getCountry()
         url: 'https://www.universal-tutorial.com/api/countries/',
         success: (function(result){
             getState();
+            console.log('test');
         }),
         error: (function(error){
             console.log(error);
