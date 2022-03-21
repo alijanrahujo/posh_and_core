@@ -41,10 +41,10 @@
                             <a class="nav-link" id="leave-tab" data-toggle="tab" href="#Leave" role="tab"
                                aria-controls="Leave" aria-selected="false">{{trans('file.Leave')}}</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" id="employee_core_hr-tab" data-toggle="tab" href="#Employee_Core_hr"
                                role="tab" aria-controls="Employee_Core_hr" aria-selected="false">{{__('Core HR')}}</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" id="employee_project_task-tab" data-toggle="tab"
                                href="#Employee_project_task" role="tab" aria-controls="Employee_project_task"
