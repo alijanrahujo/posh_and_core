@@ -1,10 +1,6 @@
 @extends('layout.main')
 @section('content')
 
-<?php
-exit;
-?>
-
     <section>
 
         <div class="container-fluid"><span id="general_result"></span></div>
