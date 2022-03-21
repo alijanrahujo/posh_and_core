@@ -613,7 +613,7 @@
                                             href="{{route('report.employees')}}">{{__('Employees Report')}}</a>
                                 </li>
                             @endcan
-                            @can('report-account')
+                            <!-- @can('report-account')
                                 <li id="account_report"><a
                                             href="{{route('report.account')}}">{{__('Account Report')}}</a>
                                 </li>
@@ -637,7 +637,7 @@
                             {{-- New --}}
                             @can('report-pension')
                                 <li id="pension_report"><a href="{{route('report.pension')}}">{{__('Pension Report')}}</a></li>
-                            @endcan
+                            @endcan -->
                         </ul>
                     </li>
                 {{-- @endcan --}}
