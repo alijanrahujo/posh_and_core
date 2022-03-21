@@ -1,6 +1,9 @@
 @extends('layout.main')
 @section('content')
 
+<?php
+exit;
+?>
 
     <section>
 
