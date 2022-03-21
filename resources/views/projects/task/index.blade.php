@@ -15,7 +15,7 @@
         </div>
 
         <div class="table-responsive">
-            <table id="task-table" class="table ">
+            <table id="task-table" class="table " style="width:100%">
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
