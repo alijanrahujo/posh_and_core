@@ -1,9 +1,5 @@
 <?php $__env->startSection('content'); ?>
 
-<?php
-exit;
-?>
-
     <section>
 
         <div class="container-fluid"><span id="general_result"></span></div>

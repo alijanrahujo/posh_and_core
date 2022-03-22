@@ -1,5 +1,4 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
     <section>
@@ -8,10 +7,10 @@
 
 
         <div class="container-fluid mb-3">
-            @can('store-task')
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-task')): ?>
                 <button type="button" class="btn btn-info" name="create_record" id="create_record"><i
-                            class="fa fa-plus"></i> {{__('Add Task')}}</button>
-            @endcan
+                            class="fa fa-plus"></i> <?php echo e(__('Add Task')); ?></button>
+            <?php endif; ?>
         </div>
 
         <div class="table-responsive">
@@ -19,14 +18,14 @@
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Title')}}</th>
-                    <th>{{__('Start Date')}}</th>
-                    <th>{{__('End Date')}}</th>
-                    <th>{{trans('file.Status')}}</th>
-                    <th>{{__('Assigned Employees')}}</th>
-                    <th>{{__('Created By')}}</th>
-                    <th>{{__('Task Progress')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
+                    <th><?php echo e(trans('file.Title')); ?></th>
+                    <th><?php echo e(__('Start Date')); ?></th>
+                    <th><?php echo e(__('End Date')); ?></th>
+                    <th><?php echo e(trans('file.Status')); ?></th>
+                    <th><?php echo e(__('Assigned Employees')); ?></th>
+                    <th><?php echo e(__('Created By')); ?></th>
+                    <th><?php echo e(__('Task Progress')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                 </tr>
                 </thead>
 
@@ -41,7 +40,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title">{{__('Add Task')}}</h5>
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Add Task')); ?></h5>
                     <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
                 </div>
 
@@ -49,26 +48,26 @@
                     <span id="form_result"></span>
                     <form method="post" id="sample_form" class="form-horizontal">
 
-                        @csrf
+                        <?php echo csrf_field(); ?>
 
                         <div class="row">
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Title')}} *</label>
+                                <label><?php echo e(trans('file.Title')); ?> *</label>
                                 <input type="text" name="task_name" id="task_name" required class="form-control"
-                                       placeholder="{{trans('file.Title')}}">
+                                       placeholder="<?php echo e(trans('file.Title')); ?>">
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group hide-edit">
-                                    <label>{{trans('file.Company')}}</label>
+                                    <label><?php echo e(trans('file.Company')); ?></label>
                                     <select name="company_id" id="company_id" class="form-control selectpicker dynamic"
                                             data-live-search="true" data-live-search-style="contains"
                                             data-first_name="first_name" data-last_name="last_name"
-                                            title='{{__('Selecting',['key'=>trans('file.Company')])}}...'>
-                                        @foreach($companies as $company)
-                                            <option value="{{$company->id}}">{{$company->company_name}}</option>
-                                        @endforeach
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Company')])); ?>...'>
+                                        <?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($company->id); ?>"><?php echo e($company->company_name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                     </select>
                                 </div>
@@ -76,38 +75,38 @@
 
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('Start Date')}} *</label>
+                                <label><?php echo e(__('Start Date')); ?> *</label>
                                 <input type="text" name="start_date" id="start_date" autocomplete="off" required
                                        class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('End Date')}} *</label>
+                                <label><?php echo e(__('End Date')); ?> *</label>
                                 <input type="text" name="end_date" id="end_date" autocomplete="off" required
                                        class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Project')}}</label>
+                                <label><?php echo e(trans('file.Project')); ?></label>
                                 <select name="project_id" id="project_id" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Project')])}}...'>
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Project')])); ?>...'>
+                                    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($project->id); ?>"><?php echo e($project->title); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('Estimated Hour')}} *</label>
+                                <label><?php echo e(__('Estimated Hour')); ?> *</label>
                                 <input type="text" name="task_hour" id="task_hour" required class="form-control"
-                                       placeholder="{{__('Estimated Hour')}}">
+                                       placeholder="<?php echo e(__('Estimated Hour')); ?>">
                             </div>
 
                             <div class="col-md-4 form-group">
-                                <label>{{__('Project Users')}} *</label>
+                                <label><?php echo e(__('Project Users')); ?> *</label>
                                 <select name="employee_id[]" id="employee_id" class="js-example-responsive w-100" multiple="multiple">
                                 </select>
                             </div>
@@ -115,7 +114,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>{{trans('file.Description')}}</label>
+                                    <label><?php echo e(trans('file.Description')); ?></label>
                                     <textarea class="form-control des-editor" id="description" name="description"
                                               rows="3"></textarea>
                                 </div>
@@ -125,7 +124,7 @@
                             <div class="container">
                                 <div class="form-group" align="center">
                                     <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                           value={{trans('file.Add')}}>
+                                           value=<?php echo e(trans('file.Add')); ?>>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +140,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title">{{__('Edit Task')}}</h5>
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Edit Task')); ?></h5>
                     <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
                 </div>
 
@@ -149,65 +148,65 @@
                     <span id="edit_form_result"></span>
                     <form method="post" id="edit_sample_form" class="form-horizontal">
 
-                        @csrf
+                        <?php echo csrf_field(); ?>
 
                         <div class="row">
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Title')}} *</label>
+                                <label><?php echo e(trans('file.Title')); ?> *</label>
                                 <input type="text" name="edit_task_name" id="edit_task_name" required
                                        class="form-control"
-                                       placeholder="{{trans('file.Title')}}">
+                                       placeholder="<?php echo e(trans('file.Title')); ?>">
                             </div>
 
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('Start Date')}} *</label>
+                                <label><?php echo e(__('Start Date')); ?> *</label>
                                 <input type="text" name="edit_start_date" id="edit_start_date" autocomplete="off"
                                        required class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('End Date')}} *</label>
+                                <label><?php echo e(__('End Date')); ?> *</label>
                                 <input type="text" name="edit_end_date" id="edit_end_date" autocomplete="off" required
                                        class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Project')}}</label>
+                                <label><?php echo e(trans('file.Project')); ?></label>
                                 <select name="edit_project_id" id="edit_project_id" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Project')])}}...'>
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Project')])); ?>...'>
+                                    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($project->id); ?>"><?php echo e($project->title); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('Estimated Hour')}} *</label>
+                                <label><?php echo e(__('Estimated Hour')); ?> *</label>
                                 <input type="text" name="edit_task_hour" id="edit_task_hour" required
                                        class="form-control"
-                                       placeholder="{{__('Estimated Hour')}}">
+                                       placeholder="<?php echo e(__('Estimated Hour')); ?>">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Status')}}</label>
+                                <label><?php echo e(trans('file.Status')); ?></label>
                                 <select name="edit_task_status" id="edit_task_status" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Status')])}}...'>
-                                    <option value="not started">{{__('Not Started')}}</option>
-                                    <option value="ongoing">{{trans('file.Ongoing')}}</option>
-                                    <option value="completed">{{trans('file.Completed')}}</option>
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Status')])); ?>...'>
+                                    <option value="not started"><?php echo e(__('Not Started')); ?></option>
+                                    <option value="ongoing"><?php echo e(trans('file.Ongoing')); ?></option>
+                                    <option value="completed"><?php echo e(trans('file.Completed')); ?></option>
                                 </select>
                             </div>
 
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>{{trans('file.Description')}}</label>
+                                    <label><?php echo e(trans('file.Description')); ?></label>
                                     <textarea class="form-control des-editor" id="edit_description"
                                               name="edit_description"
                                               rows="3"></textarea>
@@ -216,10 +215,10 @@
 
 
                             <div class="col-md-12 form-group show-edit">
-                                <label>{{__('Progress Bar')}}} </label>
+                                <label><?php echo e(__('Progress Bar')); ?>} </label>
                                 <input type="text" name="edit_task_progress" id="edit_task_progress"
                                        class="form-control range-slider "
-                                       placeholder="{{__('Progress Bar')}}}">
+                                       placeholder="<?php echo e(__('Progress Bar')); ?>}">
                             </div>
 
 
@@ -228,7 +227,7 @@
                                     <input type="hidden" name="hidden_id" id="hidden_id"/>
                                     <input type="submit" name="edit_action_button" id="edit_action_button"
                                            class="btn btn-warning"
-                                           value={{trans("file.Edit")}}>
+                                           value=<?php echo e(trans("file.Edit")); ?>>
                                 </div>
                             </div>
                         </div>
@@ -244,26 +243,26 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">{{trans('file.Confirmation')}}</h2>
+                    <h2 class="modal-title"><?php echo e(trans('file.Confirmation')); ?></h2>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h4 align="center">{{__('Are you sure you want to remove this data?')}}</h4>
+                    <h4 align="center"><?php echo e(__('Are you sure you want to remove this data?')); ?></h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">{{trans('file.OK')}}'
+                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger"><?php echo e(trans('file.OK')); ?>'
                     </button>
                     <button type="button" class="close btn-default"
-                            data-dismiss="modal">{{trans('file.Cancel')}}</button>
+                            data-dismiss="modal"><?php echo e(trans('file.Cancel')); ?></button>
                 </div>
             </div>
         </div>
     </div>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
     (function($) {
         "use strict";
@@ -271,14 +270,14 @@
         $(document).ready(function () {
 
             $('.js-example-responsive').select2({
-                placeholder: '{{__('Assign Employee...')}}',
+                placeholder: '<?php echo e(__('Assign Employee...')); ?>',
                 width: 'resolve',
                 theme: "classic",
             });
 
             let date = $('.date');
             date.datepicker({
-                format: '{{ env('Date_Format_JS')}}',
+                format: '<?php echo e(env('Date_Format_JS')); ?>',
                 autoclose: true,
                 todayHighlight: true
             });
@@ -316,7 +315,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('tasks.index') }}",
+                    url: "<?php echo e(route('tasks.index')); ?>",
                 },
 
                 columns: [
@@ -383,12 +382,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ {{__("records per page")}}',
-                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                    "search": '{{trans("file.Search")}}',
+                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                    "search": '<?php echo e(trans("file.Search")); ?>',
                     'paginate': {
-                        'previous': '{{trans("file.Previous")}}',
-                        'next': '{{trans("file.Next")}}'
+                        'previous': '<?php echo e(trans("file.Previous")); ?>',
+                        'next': '<?php echo e(trans("file.Next")); ?>'
                     }
                 },
                 'columnDefs': [
@@ -538,7 +537,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "{{ route('tasks.store') }}",
+                url: "<?php echo e(route('tasks.store')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -570,7 +569,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "{{ route('tasks.update') }}",
+                url: "<?php echo e(route('tasks.update')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -608,7 +607,7 @@
             $('#edit_form_result').html('');
 
 
-            var target = "{{ route('tasks.index') }}/" + id + '/edit';
+            var target = "<?php echo e(route('tasks.index')); ?>/" + id + '/edit';
 
             $.ajax({
                 url: target,
@@ -648,8 +647,8 @@
         $(document).on('click', '.delete', function () {
             delete_id = $(this).attr('id');
             $('#confirmModal').modal('show');
-            $('.modal-title').text('{{__('DELETE Record')}}');
-            $('#ok_button').text('{{trans('file.OK')}}');
+            $('.modal-title').text('<?php echo e(__('DELETE Record')); ?>');
+            $('#ok_button').text('<?php echo e(trans('file.OK')); ?>');
 
         });
 
@@ -666,11 +665,11 @@
         });
 
         $('#ok_button').on('click', function () {
-            let target = "{{ route('tasks.index') }}/" + delete_id + '/delete';
+            let target = "<?php echo e(route('tasks.index')); ?>/" + delete_id + '/delete';
             $.ajax({
                 url: target,
                 beforeSend: function () {
-                    $('#ok_button').text('{{trans('file.Deleting...')}}');
+                    $('#ok_button').text('<?php echo e(trans('file.Deleting...')); ?>');
                 },
                 success: function (data) {
                     let html = '';
@@ -697,7 +696,7 @@
                 let last_name = $(this).data('last_name');
                 let _token = $('input[name="_token"]').val();
                 $.ajax({
-                    url: "{{ route('dynamic_employee') }}",
+                    url: "<?php echo e(route('dynamic_employee')); ?>",
                     method: "POST",
                     data: {value: value, _token: _token, first_name: first_name, last_name: last_name},
                     success: function (result) {
@@ -712,10 +711,12 @@
 
     })(jQuery);
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 <style>
 #task-table
 {
     width: 100% !important;
 }
 </style>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/projects/task/index.blade.php ENDPATH**/ ?>

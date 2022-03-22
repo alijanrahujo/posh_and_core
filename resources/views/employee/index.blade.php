@@ -844,3 +844,9 @@ $("#state").change(function (){
 })
 </script>
 @endpush
+<style>
+#employee-table
+{
+    width: 100% !important;
+}
+</style>

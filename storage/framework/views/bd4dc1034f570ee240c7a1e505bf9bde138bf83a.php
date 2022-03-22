@@ -596,7 +596,7 @@
                                             href="<?php echo e(route('report.employees')); ?>"><?php echo e(__('Employees Report')); ?></a>
                                 </li>
                             <?php endif; ?>
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('report-account')): ?>
+                            <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('report-account')): ?>
                                 <li id="account_report"><a
                                             href="<?php echo e(route('report.account')); ?>"><?php echo e(__('Account Report')); ?></a>
                                 </li>
@@ -620,7 +620,7 @@
                             
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('report-pension')): ?>
                                 <li id="pension_report"><a href="<?php echo e(route('report.pension')); ?>"><?php echo e(__('Pension Report')); ?></a></li>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
                         </ul>
                     </li>
                 
