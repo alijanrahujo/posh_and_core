@@ -640,3 +640,10 @@
 </script>
 
 @endpush
+
+<style>
+#ticket-table
+{
+    width: 100% !important;
+}
+</style>

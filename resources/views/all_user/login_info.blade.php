@@ -170,5 +170,11 @@
     })(jQuery);
 </script>
 @endpush
+<style>
+#user-login-table
+{
+    width: 100% !important;
+}
+</style>
 
 
