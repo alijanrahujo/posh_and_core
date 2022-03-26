@@ -106,12 +106,29 @@
                                        placeholder="{{__('Estimated Hour')}}">
                             </div>
 
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6 form-group">
                                 <label>{{__('Project Users')}} *</label>
                                 <select name="employee_id[]" id="employee_id" class="js-example-responsive w-100" multiple="multiple">
                                 </select>
                             </div>
 
+                            <div class="col-md-6 text-sm-right">
+                                <label>&nbsp;</label>
+                                <br>
+                                <button type="button" class="btn btn-info" id="add_sub_task">
+                                    <i class="fa fa-plush"></i>
+                                    Add Sub Task
+                                </button>
+                            </div>
+
+                            <div class="pl-3" id="subtask">
+
+                           
+
+
+                            </div>
+                            
+                            
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -709,6 +726,14 @@
                 });
             }
         });
+
+        $('#add_sub_task').click(function(){
+            $("#subtask").append('<div class="row"><div class="col-md-7"><label>Sub Task</label><input type="text" name="subtask[]" class="form-control"></div><div class="col-md-4"><label>File</label><input type="file" name="file[]" class="form-control"></div><div class="col-md-1 text-sm-right"><label>&nbsp;</label><br<button type="button" class="btn btn-danger del"><i class="fa fa-trash"></i></button></div></div>');
+        })
+
+        $(document).on('click','.del',function(){
+            $(this).parent().parent().remove();
+        })
 
     })(jQuery);
 </script>

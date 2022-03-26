@@ -7,24 +7,24 @@
 
 
         <div class="container-fluid mb-3">
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-task')): ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-project')): ?>
                 <button type="button" class="btn btn-info" name="create_record" id="create_record"><i
-                            class="fa fa-plus"></i> <?php echo e(__('Add Task')); ?></button>
+                            class="fa fa-plus"></i> <?php echo e(__('Add Project')); ?></button>
             <?php endif; ?>
         </div>
 
         <div class="table-responsive">
-            <table id="task-table" class="table " style="width:100%">
+            <table id="project-table" class="table ">
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Title')); ?></th>
+                    <th><?php echo e(__('Project Name')); ?></th>
+                    <th><?php echo e(trans('file.Priority')); ?></th>
+                    <th><?php echo e(__('Assigned Employees')); ?></th>
+                    <th><?php echo e(trans('file.Client')); ?></th>
                     <th><?php echo e(__('Start Date')); ?></th>
                     <th><?php echo e(__('End Date')); ?></th>
-                    <th><?php echo e(trans('file.Status')); ?></th>
-                    <th><?php echo e(__('Assigned Employees')); ?></th>
-                    <th><?php echo e(__('Created By')); ?></th>
-                    <th><?php echo e(__('Task Progress')); ?></th>
+                    <th><?php echo e(__('Progress')); ?></th>
                     <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                 </tr>
                 </thead>
@@ -40,35 +40,35 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Add Task')); ?></h5>
-                    <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Add Project')); ?></h5>
+                    <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i
+                                class="dripicons-cross"></i></button>
                 </div>
 
-                <div class="modal-body">
-                    <span id="form_result"></span>
-                    <form method="post" id="sample_form" class="form-horizontal">
+                <span id="form_result"></span>
+                <form method="post" id="sample_form" class="form-horizontal">
 
-                        <?php echo csrf_field(); ?>
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
 
                         <div class="row">
 
                             <div class="col-md-6 form-group">
                                 <label><?php echo e(trans('file.Title')); ?> *</label>
-                                <input type="text" name="task_name" id="task_name" required class="form-control"
+                                <input type="text" name="title" id="title" required class="form-control"
                                        placeholder="<?php echo e(trans('file.Title')); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group hide-edit">
-                                    <label><?php echo e(trans('file.Company')); ?></label>
-                                    <select name="company_id" id="company_id" class="form-control selectpicker dynamic"
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Client')); ?>*</label>
+                                    <select name="client_id" id="client_id"
+                                            class="form-control selectpicker dynamic"
                                             data-live-search="true" data-live-search-style="contains"
-                                            data-first_name="first_name" data-last_name="last_name"
-                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Company')])); ?>...'>
-                                        <?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($company->id); ?>"><?php echo e($company->company_name); ?></option>
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Client')])); ?>...'>
+                                        <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($client->id); ?>"><?php echo e($client->first_name); ?> <?php echo e($client->last_name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
                                     </select>
                                 </div>
                             </div>
@@ -88,46 +88,48 @@
                                        value="">
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label><?php echo e(trans('file.Project')); ?></label>
-                                <select name="project_id" id="project_id" class="form-control selectpicker "
+                            <div class="col-md-4 form-group">
+                                <label><?php echo e(trans('file.Priority')); ?></label>
+                                <select name="project_priority" id="project_priority" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Project')])); ?>...'>
-                                    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($project->id); ?>"><?php echo e($project->title); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Priority')])); ?>...'>
+                                    <option value="low"><?php echo e(trans('file.Low')); ?></option>
+                                    <option value="medium"><?php echo e(trans('file.Medium')); ?></option>
+                                    <option value="high"><?php echo e(trans('file.High')); ?></option>
+                                    <option value="highest"><?php echo e(trans('file.Highest')); ?></option>
                                 </select>
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label><?php echo e(__('Estimated Hour')); ?> *</label>
-                                <input type="text" name="task_hour" id="task_hour" required class="form-control"
-                                       placeholder="<?php echo e(__('Estimated Hour')); ?>">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Company')); ?></label>
+                                    <select name="company_id" id="company_id" class="form-control selectpicker dynamic"
+                                            data-live-search="true" data-live-search-style="contains"
+                                            data-first_name="first_name" data-last_name="last_name"
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Company')])); ?>...'>
+                                        <?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($company->id); ?>"><?php echo e($company->company_name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label><?php echo e(__('Project Users')); ?> *</label>
-                                <select name="employee_id[]" id="employee_id" class="js-example-responsive w-100" multiple="multiple">
+                            <div class="col-md-4 form-group">
+                                <label><?php echo e(__('Assigned Employees')); ?> *</label>
+                                <select name="employee_id[]" id="employee_id" class="form-control js-example-responsive"
+                                        multiple="multiple">
+
                                 </select>
                             </div>
 
-                            <div class="col-md-6 text-sm-right">
-                                <label>&nbsp;</label>
-                                <br>
-                                <button type="button" class="btn btn-info" id="add_sub_task">
-                                    <i class="fa fa-plush"></i>
-                                    Add Sub Task
-                                </button>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Summary')); ?></label>
+                                    <textarea class="form-control" id="summary"
+                                              name="summary" rows="3"></textarea>
+                                </div>
                             </div>
-
-                            <div class="pl-3" id="subtask">
-
-                           
-
-
-                            </div>
-                            
-                            
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -136,44 +138,55 @@
                                               rows="3"></textarea>
                                 </div>
                             </div>
-
-
-                            <div class="container">
-                                <div class="form-group" align="center">
-                                    <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                           value=<?php echo e(trans('file.Add')); ?>>
-                                </div>
-                            </div>
                         </div>
-                    </form>
 
-                </div>
+
+                    </div>
+                    <input type="submit" name="action_button" id="action_button"
+                           class="btn btn-warning btn-block btn-lg" value=<?php echo e(trans('file.Add')); ?>>
+                </form>
             </div>
         </div>
     </div>
+
 
     <div id="editModal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Edit Task')); ?></h5>
-                    <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Edit Project')); ?></h5>
+                    <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i
+                                class="dripicons-cross"></i></button>
                 </div>
 
-                <div class="modal-body">
-                    <span id="edit_form_result"></span>
-                    <form method="post" id="edit_sample_form" class="form-horizontal">
+                <span id="edit_form_result"></span>
+                <form method="post" id="edit_sample_form" class="form-horizontal">
 
-                        <?php echo csrf_field(); ?>
+                    <?php echo csrf_field(); ?>
 
+                    <div class="modal-body">
                         <div class="row">
 
                             <div class="col-md-6 form-group">
                                 <label><?php echo e(trans('file.Title')); ?> *</label>
-                                <input type="text" name="edit_task_name" id="edit_task_name" required
+                                <input type="text" name="edit_title" id="edit_title" required
                                        class="form-control"
                                        placeholder="<?php echo e(trans('file.Title')); ?>">
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Client')); ?>*</label>
+                                    <select name="edit_client_id" id="edit_client_id"
+                                            class="form-control selectpicker dynamic"
+                                            data-live-search="true" data-live-search-style="contains"
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Client')])); ?>...'>
+                                        <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($client->id); ?>"><?php echo e($client->first_name); ?> <?php echo e($client->last_name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
                             </div>
 
 
@@ -191,35 +204,40 @@
                                        value="">
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label><?php echo e(trans('file.Project')); ?></label>
-                                <select name="edit_project_id" id="edit_project_id" class="form-control selectpicker "
-                                        data-live-search="true" data-live-search-style="contains"
-                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Project')])); ?>...'>
-                                    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($project->id); ?>"><?php echo e($project->title); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </div>
 
                             <div class="col-md-6 form-group">
-                                <label><?php echo e(__('Estimated Hour')); ?> *</label>
-                                <input type="text" name="edit_task_hour" id="edit_task_hour" required
-                                       class="form-control"
-                                       placeholder="<?php echo e(__('Estimated Hour')); ?>">
+                                <label><?php echo e(trans('file.Priority')); ?></label>
+                                <select name="edit_project_priority" id="edit_project_priority"
+                                        class="form-control selectpicker "
+                                        data-live-search="true" data-live-search-style="contains"
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Priority')])); ?>...'>
+                                    <option value="low"><?php echo e(trans('file.Low')); ?></option>
+                                    <option value="medium"><?php echo e(trans('file.Medium')); ?></option>
+                                    <option value="high"><?php echo e(trans('file.High')); ?></option>
+                                    <option value="highest"><?php echo e(trans('file.Highest')); ?></option>
+                                </select>
                             </div>
 
                             <div class="col-md-6 form-group">
                                 <label><?php echo e(trans('file.Status')); ?></label>
-                                <select name="edit_task_status" id="edit_task_status" class="form-control selectpicker "
+                                <select name="edit_project_status" id="edit_project_status"
+                                        class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
                                         title='<?php echo e(__('Selecting',['key'=>trans('file.Status')])); ?>...'>
-                                    <option value="not started"><?php echo e(__('Not Started')); ?></option>
-                                    <option value="ongoing"><?php echo e(trans('file.Ongoing')); ?></option>
+                                    <option value="not_started"><?php echo e(__('Not Started')); ?></option>
+                                    <option value="in_progress"><?php echo e(__('In Progress')); ?></option>
                                     <option value="completed"><?php echo e(trans('file.Completed')); ?></option>
+                                    <option value="deferred"><?php echo e(trans('file.Deferred')); ?></option>
                                 </select>
                             </div>
 
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Summary')); ?></label>
+                                    <textarea class="form-control" id="edit_summary"
+                                              name="edit_summary" rows="3"></textarea>
+                                </div>
+                            </div>
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -230,27 +248,20 @@
                                 </div>
                             </div>
 
-
                             <div class="col-md-12 form-group show-edit">
-                                <label><?php echo e(__('Progress Bar')); ?>} </label>
-                                <input type="text" name="edit_task_progress" id="edit_task_progress"
+                                <label><?php echo e(__('Progress Bar')); ?> </label>
+                                <input type="text" name="edit_project_progress" id="edit_project_progress"
                                        class="form-control range-slider "
-                                       placeholder="<?php echo e(__('Progress Bar')); ?>}">
+                                       placeholder="<?php echo e(__('Progress Bar')); ?>">
                             </div>
 
-
-                            <div class="container">
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="hidden_id" id="hidden_id"/>
-                                    <input type="submit" name="edit_action_button" id="edit_action_button"
-                                           class="btn btn-warning"
-                                           value=<?php echo e(trans("file.Edit")); ?>>
-                                </div>
-                            </div>
                         </div>
-                    </form>
 
-                </div>
+                    </div>
+                    <input type="hidden" name="hidden_id" id="hidden_id"/>
+                    <input type="submit" name="edit_action_button" id="edit_action_button"
+                           class="btn btn-warning btn-block btn-lg" value=<?php echo e(trans("file.Edit")); ?>>
+                </form>
             </div>
         </div>
     </div>
@@ -277,17 +288,20 @@
     </div>
 
 
+
+
+
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
     (function($) {
-        "use strict";
 
         $(document).ready(function () {
 
             $('.js-example-responsive').select2({
-                placeholder: '<?php echo e(__('Assign Employee...')); ?>',
+                placeholder: '<?php echo e(__('')); ?>',
                 width: 'resolve',
                 theme: "classic",
             });
@@ -300,9 +314,7 @@
             });
 
 
-
-
-            var table_table = $('#task-table').DataTable({
+            var table_table = $('#project-table').DataTable({
                 initComplete: function () {
                     this.api().columns([1]).every(function () {
                         var column = this;
@@ -332,7 +344,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "<?php echo e(route('tasks.index')); ?>",
+                    url: "<?php echo e(route('projects.index')); ?>",
                 },
 
                 columns: [
@@ -342,22 +354,13 @@
                         searchable: false
                     },
                     {
-                        data: 'task_name',
-                        name: 'task_name',
-                    },
+                        data: 'summary',
+                        name: 'summary'
 
-                    {
-                        data: 'start_date',
-                        name: 'start_date',
-                    },
-
-                    {
-                        data: 'end_date',
-                        name: 'end_date',
                     },
                     {
-                        data: 'task_status',
-                        name: 'task_status',
+                        data: 'project_priority',
+                        name: 'project_priority',
                     },
                     {
                         data: 'assigned_employee',
@@ -367,28 +370,34 @@
                         }
                     },
                     {
-                        data: 'created_by',
-                        name: 'created_by',
+                        data: 'client',
+                        name: 'client',
                     },
                     {
-                        data: 'task_progress',
-                        name: 'task_progress',
+                        data: 'start_date',
+                        name: 'start_date',
+                    },
+                    {
+                        data: 'end_date',
+                        name: 'end_date',
+                    },
+                    {
+                        data: 'project_progress',
+                        name: 'project_progress',
                         render: function (data) {
                             if (data !== null) {
-                                if(data > 70) {
-                                    return data + '% complete<div class="progress"><div class="progress-bar green" role="progressbar" style="width: '+data+'%" aria-valuenow="'+data+'" aria-valuemin="0" aria-valuemax="100"></div></div>'
+                                if (data > 70) {
+                                    return data + '% complete<div class="progress"><div class="progress-bar green" role="progressbar" style="width: ' + data + '%" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100"></div></div>'
                                 } else if (data > 50) {
-                                    return data + '% complete<div class="progress"><div class="progress-bar yellow" role="progressbar" style="width: '+data+'%" aria-valuenow="'+data+'" aria-valuemin="0" aria-valuemax="100"></div></div>'
+                                    return data + '% complete<div class="progress"><div class="progress-bar yellow" role="progressbar" style="width: ' + data + '%" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100"></div></div>'
                                 } else {
-                                    return data + '% complete<div class="progress"><div class="progress-bar red" role="progressbar" style="width: '+data+'%" aria-valuenow="'+data+'" aria-valuemin="0" aria-valuemax="100"></div></div>'
+                                    return data + '% complete<div class="progress"><div class="progress-bar red" role="progressbar" style="width: ' + data + '%" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100"></div></div>'
                                 }
                             } else {
                                 return 0 + '% complete'
                             }
                         }
                     },
-
-
                     {
                         data: 'action',
                         name: 'action',
@@ -521,13 +530,13 @@
                           necessary, as we are looking to handle it internally.
                         */
                         var id = 'blobid' + (new Date()).getTime();
-                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                         var base64 = reader.result.split(',')[1];
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
 
                         /* call the callback and populate the Title field with the file name */
-                        cb(blobInfo.blobUri(), { title: file.name });
+                        cb(blobInfo.blobUri(), {title: file.name});
                     };
                     reader.readAsDataURL(file);
                 };
@@ -554,7 +563,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "<?php echo e(route('tasks.store')); ?>",
+                url: "<?php echo e(route('projects.store')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -575,18 +584,17 @@
                         $('#sample_form')[0].reset();
                         $('select').selectpicker('refresh');
                         $('.js-example-responsive').val(null).trigger('change');
-                        $('#task-table').DataTable().ajax.reload();
+                        $('#project-table').DataTable().ajax.reload();
                     }
                     $('#form_result').html(html).slideDown(300).delay(5000).slideUp(300);
                 }
-            });
+            })
         });
 
         $('#edit_sample_form').on('submit', function (event) {
             event.preventDefault();
-
             $.ajax({
-                url: "<?php echo e(route('tasks.update')); ?>",
+                url: "<?php echo e(route('projects.update')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -607,7 +615,8 @@
                         setTimeout(function () {
                             $('#editModal').modal('hide');
                             $('select').selectpicker('refresh');
-                            $('#task-table').DataTable().ajax.reload();
+                            $('.js-example-responsive').val(null).trigger('change');
+                            $('#project-table').DataTable().ajax.reload();
                             $('#edit_sample_form')[0].reset();
                         }, 2000);
 
@@ -624,16 +633,15 @@
             $('#edit_form_result').html('');
 
 
-            var target = "<?php echo e(route('tasks.index')); ?>/" + id + '/edit';
+            var target = "<?php echo e(route('projects.index')); ?>/" + id + '/edit';
 
             $.ajax({
                 url: target,
                 dataType: "json",
                 success: function (html) {
 
-                    $('#edit_task_name').val(html.data.task_name);
-                    $('#edit_project_id').selectpicker('val', html.data.project_id);
-                    $('#edit_task_status').selectpicker('val', html.data.task_status);
+                    $('#edit_title').val(html.data.title);
+                    $('#edit_project_priority').selectpicker('val', html.data.project_priority);
                     if (html.data.description) {
                         function htmlDecode(input){
                             var e = document.createElement('div');
@@ -642,15 +650,20 @@
                         }
                         tinymce.get('edit_description').setContent(htmlDecode(html.data.description));
                     }
+                    $('#edit_client_id').selectpicker('val', html.data.client_id);
+
                     $('#edit_start_date').val(html.data.start_date);
                     $('#edit_end_date').val(html.data.end_date);
-                    $('#edit_task_hour').val(html.data.task_hour);
-                    if (html.data.task_progress) {
-                        var instance = $('#edit_task_progress').data("ionRangeSlider");
+                    if (html.data.project_status) {
+                        $('#edit_project_status').selectpicker('val', html.data.project_status);
+                    }
+                    if (html.data.project_progress) {
+                        var instance = $('#edit_project_progress').data("ionRangeSlider");
                         instance.update({
-                            from: html.data.task_progress
+                            from: html.data.project_progress
                         });
                     }
+                    $('#edit_summary').val(html.data.summary);
 
                     $('#hidden_id').val(html.data.id);
                     $('#editModal').modal('show');
@@ -673,16 +686,16 @@
         $('.close').on('click', function () {
             $('#sample_form')[0].reset();
             $('#edit_sample_form')[0].reset();
+            $('select').selectpicker('refresh');
             var instance = $('#edit_task_progress').data("ionRangeSlider");
             instance.update({
                 from: 0
             });
-            $('select').selectpicker('refresh');
-            $('#task-table').DataTable().ajax.reload();
+            $('#project-table').DataTable().ajax.reload();
         });
 
         $('#ok_button').on('click', function () {
-            let target = "<?php echo e(route('tasks.index')); ?>/" + delete_id + '/delete';
+            let target = "<?php echo e(route('projects.index')); ?>/" + delete_id + '/delete';
             $.ajax({
                 url: target,
                 beforeSend: function () {
@@ -699,7 +712,7 @@
                     setTimeout(function () {
                         $('#general_result').html(html).slideDown(300).delay(5000).slideUp(300);
                         $('#confirmModal').modal('hide');
-                        $('#task-table').DataTable().ajax.reload();
+                        $('#project-table').DataTable().ajax.reload();
                     }, 2000);
                 }
             })
@@ -726,22 +739,14 @@
             }
         });
 
-        $('#add_sub_task').click(function(){
-            $("#subtask").append('<div class="row"><div class="col-md-7"><label>Sub Task</label><input type="text" name="subtask[]" class="form-control"></div><div class="col-md-4"><label>File</label><input type="file" name="file[]" class="form-control"></div><div class="col-md-1 text-sm-right"><label>&nbsp;</label><br<button type="button" class="btn btn-danger del"><i class="fa fa-trash"></i></button></div></div>');
-        })
-
-        $(document).on('click','.del',function(){
-            $(this).parent().parent().remove();
-        })
-
     })(jQuery);
 </script>
 <?php $__env->stopPush(); ?>
+
 <style>
-#task-table
+#project-table
 {
     width: 100% !important;
 }
 </style>
-
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/projects/task/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/projects/project/index.blade.php ENDPATH**/ ?>
