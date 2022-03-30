@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Util\Json;
 
 class TaskController extends Controller {
 
@@ -255,6 +256,62 @@ class TaskController extends Controller {
 		}
 
 		return response()->json(['success' => __('You are not authorized')]);
+	}
+
+	public function subtask(Request $request, Task $task)
+	{
+		$validator = Validator::make($request->only('subtask'),
+			[
+				'subtask' => 'required'
+			]
+		);
+
+
+		if ($validator->fails())
+		{
+			return response()->json(['errors' => $validator->errors()->all()]);
+		}
+
+		$data = [];
+
+		if(isset($task->subtask))
+		{
+			$a[] = array('subtask'=>$request->subtask,'status'=>0);
+			$sub_task = array_merge(json_decode($task->subtask),$a);
+		}
+		else
+		{
+			$sub_task[] = ['subtask'=>$request->subtask,'status'=>0];
+		}
+		
+	
+		$data['subtask'] = json_encode($sub_task);
+
+		Task::where('id',$task->id)->update($data);
+		return response()->json(['success' => __('Data is successfully updated')]);
+
+	}
+
+	public function dataview(Request $request, Task $task)
+	{
+		$subtask = Task::select('subtask')->where('id',$task->id)->first();
+		
+		$subtask = json_decode($subtask['subtask']);
+		if($subtask)
+		{
+			return response()->json([
+				'message' => 'Data Found',
+				'code' => 200,
+				'data' => $subtask
+			]);
+		}
+		else
+		{
+			return response()->json([
+				'message' => 'Internal Server Error',
+				'code' => 500
+			]);
+		}
 	}
 
 	/**

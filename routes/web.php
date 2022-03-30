@@ -792,12 +792,16 @@ Route::group(['middleware' => ['XSS']], function ()
 
 		Route::post('tasks/{task}/progress', 'TaskController@progressStore')->name('task_progress.store');
 
+		Route::post('tasks/store_subtask/{task}', 'TaskController@subtask')->name('task_files.subtask');
+		Route::post('tasks/subtask/{task}', 'TaskController@dataview')->name('subtask.dataview');
+
 		Route::post('tasks/{task}/discussions', 'TaskDiscussionController@index')->name('task_discussions.index');
 		Route::post('tasks/store_discussions/{task}', 'TaskDiscussionController@store')->name('task_discussions.store');
 		Route::get('tasks/{id}/delete_discussions', 'TaskDiscussionController@destroy')->name('task_discussions.destroy');
-
+		
 		Route::post('tasks/{task}/files', 'TaskFileController@index')->name('task_files.index');
 		Route::post('tasks/store_files/{task}', 'TaskFileController@store')->name('task_files.store');
+
 		Route::get('tasks/{id}/delete_files', 'TaskFileController@destroy')->name('task_files.destroy');
 
 		Route::get('tasks/file_download/{id}', 'TaskFileController@download')->name('tasks.downloadFile');
