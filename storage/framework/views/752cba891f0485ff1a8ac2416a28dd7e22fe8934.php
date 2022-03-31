@@ -622,6 +622,7 @@
 
 
         $('[data-table="files"]').one('click', function (e) {
+            sub_task();
 
             $('#files-table').DataTable().clear().destroy();
 
@@ -707,7 +708,8 @@
             new $.fn.dataTable.FixedHeader(table_table);
         });
 
-        $('[data-table="files"]').one('click', function (e) {
+        function sub_task()
+        {
             $.ajax({
                 url: "<?php echo e(route('task_files.getsubtask',$task)); ?>",
                 method: "GET",
@@ -723,7 +725,7 @@
                     })    
                 }
             });
-        });
+        }
 
         $('#files_form').on('submit', function (event) {
             event.preventDefault();
