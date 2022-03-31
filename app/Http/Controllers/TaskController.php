@@ -274,7 +274,7 @@ class TaskController extends Controller {
 
 		$data = [];
 
-		if(isset($task->subtask))
+		if(isset($task->subtask) && $task->subtask !="")
 		{
 			$a[] = array('subtask'=>$request->subtask,'status'=>0);
 			$sub_task = array_merge(json_decode($task->subtask),$a);
@@ -296,9 +296,9 @@ class TaskController extends Controller {
 	{
 		$subtask = Task::select('subtask')->where('id',$task->id)->first();
 		
-		$subtask = json_decode($subtask['subtask']);
-		if($subtask)
+		if($subtask['subtask'] !="")
 		{
+			$subtask = json_decode($subtask['subtask']);
 			return response()->json([
 				'message' => 'Data Found',
 				'code' => 200,
@@ -308,8 +308,9 @@ class TaskController extends Controller {
 		else
 		{
 			return response()->json([
-				'message' => 'Internal Server Error',
-				'code' => 500
+				'message' => 'Data Not Found',
+				'code' => 200,
+				'data' => array()
 			]);
 		}
 	}

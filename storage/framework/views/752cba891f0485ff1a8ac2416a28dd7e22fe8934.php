@@ -361,7 +361,6 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Sub Task</th>
-                                                    <th>Status</th>
                                                     <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                                                 </tr>
                                                 </thead>
@@ -761,12 +760,11 @@
                 },
                 columns: [
                     { "data": "subtask" },
-                    { "data": "status" },
                     { 
                         "data": null,
                         render: function(data, type, row)
                         {
-                            return `<button class="btn btn-danger btn-sm" data-id="${row.subtask}"><i class="fa fa-trash"></i> Delete</button>`;
+                            return `<button class="btn btn-danger btn-sm float-right" data-id="${row.subtask}"><i class="fa fa-trash"></i> Delete</button>`;
                         }
                     }
                 ]
