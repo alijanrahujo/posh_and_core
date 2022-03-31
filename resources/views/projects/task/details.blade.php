@@ -152,11 +152,13 @@
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
                                        aria-controls="Notes" aria-selected="false">{{trans('file.Notes')}}</a>
                                 </li>
+                                @can('assign-task')
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
                                        aria-controls="subtask" data-table="subtask"
                                        aria-selected="false">Sub Task</a>
                                 </li>
+                                @endcan
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="Details" role="tabpanel"
@@ -263,15 +265,24 @@
                                             <form method="post" id="files_form" class="form-horizontal"
                                                   enctype="multipart/form-data">
                                                 @csrf
+                                                <div class="row">
 
-                                                <div class="col-md-6 form-group">
+                                                
+                                                <div class="col-md-12 form-group">
+                                                    <label>Sub Task *</label>
+                                                    <select name="file_title" class="form-control" id="s_subtask" required>
+                                                        <option value="">Select Sub Task</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- <div class="col-md-6 form-group">
                                                     <label>{{trans('file.Title')}} *</label>
                                                     <input type="text" name="file_title" id="file_title" required
                                                            class="form-control"
                                                            placeholder="{{trans('file.Title')}}">
-                                                </div>
+                                                </div> -->
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{trans('file.Description')}}</label>
                                                         <textarea required class="form-control" id="file_description"
@@ -285,9 +296,14 @@
                                                            class="form-control">
                                                 </div>
 
+                                                
+
                                                 <div class="col-md-6 form-group">
+                                                <label>&nbsp;</label>
+                                                    <br>
                                                     <input type="submit" name="file_submit" id="file_submit"
-                                                           class="btn btn-success" value={{trans("file.Save")}}>
+                                                           class="btn btn-success px-5 float-right" value={{trans("file.Save")}}>
+                                                </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -690,6 +706,22 @@
                 'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
             });
             new $.fn.dataTable.FixedHeader(table_table);
+
+            $.ajax({
+                url: "{{ route('task_files.getsubtask',$task) }}",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: "json",
+                success: function(data)
+                {
+                    $.each(JSON.parse(data),function(index,val){
+                        $("#s_subtask").append('<option>'+val.subtask+'</option>');
+
+                    })    
+                }
+            });
         });
 
         $('#files_form').on('submit', function (event) {
@@ -752,6 +784,8 @@
                 }
             })
         });
+
+
 
         $('[data-table="subtask"]').one('click', function (e) {
             $('#subtask-table').DataTable( {

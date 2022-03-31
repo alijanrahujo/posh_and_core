@@ -339,6 +339,12 @@ class TaskController extends Controller {
 		return response()->json(['success' => __('You are not authorized')]);
 	}
 
+	public function getsubtask($id)
+	{
+		$subtask = Task::select('subtask')->where('id',$id)->first();
+		return response()->json($subtask['subtask']);
+	}
+
 
 	public function progressStore(Request $request, Task $task)
 	{
