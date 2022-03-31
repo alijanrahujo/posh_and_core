@@ -705,7 +705,9 @@
                 'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
             });
             new $.fn.dataTable.FixedHeader(table_table);
+        });
 
+        $('[data-table="files"]').one('click', function (e) {
             $.ajax({
                 url: "<?php echo e(route('task_files.getsubtask',$task)); ?>",
                 method: "GET",
