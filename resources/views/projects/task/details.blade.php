@@ -278,7 +278,7 @@
                                                 <div class="col-md-12 sub_task_data">
                                                     
                                                 </div>
-                                                <input type="hidden" name="subtask" id="subtask">
+                                                <input type="hidden" name="subtask" id="subtaskinput">
 
                                                 <!-- <div class="col-md-6 form-group">
                                                     <label>{{trans('file.Title')}} *</label>
@@ -754,7 +754,7 @@
                                 $('.sub_task_data').append('<p>'+b+'</p>');
                             });
                             
-                            $("#subtask").val(val.subtask);
+                            $("#subtaskinput").val(val.subtask);
                         }
                         
 
@@ -839,7 +839,7 @@
                 },
                 columns: [
                     {"data": "category"},                    
-                    { "data": "subtask" },
+                    { "data": "subtask"},
                     { 
                         "data": null,
                         render: function(data, type, row)
