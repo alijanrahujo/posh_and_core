@@ -370,7 +370,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Subtask</label>
-                                                    <input type="text" name="subtask" class="form-control p-4 tag" data-role="tagsinput">
+                                                    <input type="text" name="subtask" class="form-control p-4 tag" placeholder="subtask separate by comma" data-role="tagsinput">
                                                     </div>
                                                     <div class="col-md-2 form-group">
                                                         <label>&nbsp;</label>    
