@@ -62,6 +62,7 @@ class TaskFileController extends Controller {
 
 		$data['file_description'] = $request->get('file_description');
 		$data['file_title'] = $request->file_title;
+		$data['subtask'] = $request->subtask;
 		$data ['task_id'] = $task->id;
 
 		$file = $request->file_attachment;

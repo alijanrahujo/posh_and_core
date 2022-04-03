@@ -275,6 +275,11 @@
                                                     </select>
                                                 </div>
 
+                                                <div class="col-md-12 sub_task_data">
+                                                    
+                                                </div>
+                                                <input type="hidden" name="subtask" id="subtask">
+
                                                 <!-- <div class="col-md-6 form-group">
                                                     <label>{{trans('file.Title')}} *</label>
                                                     <input type="text" name="file_title" id="file_title" required
@@ -313,6 +318,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>{{trans('file.Title')}}</th>
+                                                    <th>Sub Task</th>
                                                     <th>{{trans('file.Description')}}</th>
                                                     <th>{{__('Date and Time')}}</th>
                                                     <th class="not-exported">{{trans('file.action')}}</th>
@@ -358,9 +364,13 @@
                                             <form method="post" id="subtask_form" class="form-horizontal">
                                                 @csrf
                                                 <div class="row">
-                                                    <div class="col-md-10 form-group">
-                                                            <label>Subtask</label>
-                                                            <input type="text" name="subtask" class="form-control">
+                                                    <div class="col-md-4 form-group">
+                                                            <label>Category</label>
+                                                            <input type="text" name="category" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Subtask</label>
+                                                    <input type="text" name="subtask" class="form-control p-4 tag" data-role="tagsinput">
                                                     </div>
                                                     <div class="col-md-2 form-group">
                                                         <label>&nbsp;</label>    
@@ -377,6 +387,7 @@
                                             <table id="subtask-table" class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th>Category</th>
                                                     <th>Sub Task</th>
                                                     <th class="not-exported">{{trans('file.action')}}</th>
                                                 </tr>
@@ -393,7 +404,14 @@
         </div>
     </section>
 
-
+<style>
+.tag {
+      margin-right: 2px;
+      color: red !important;
+      background-color: #0d6efd;
+      padding: 0.2rem;
+    }
+</style>
 
 @endsection
 
@@ -669,6 +687,10 @@
                         name: 'file_title'
                     },
                     {
+                        data: 'subtask',
+                        name: 'subtask'
+                    },
+                    {
                         data: 'file_description',
                         name: 'file_description',
 
@@ -709,7 +731,7 @@
             new $.fn.dataTable.FixedHeader(table_table);
         });
 
-        function sub_task()
+        function sub_task(category='')
         {
             $.ajax({
                 url: "{{ route('task_files.getsubtask',$task) }}",
@@ -721,12 +743,29 @@
                 success: function(data)
                 {
                     $.each(JSON.parse(data),function(index,val){
-                        $("#s_subtask").append('<option>'+val.subtask+'</option>');
+                        if(category =='')
+                        {
+                            $("#s_subtask").append('<option>'+val.category+'</option>');
+                        }
+                        else if(category == val.category)
+                        {
+                            $('.sub_task_data').empty();
+                            $.each(val.subtask,function(a,b){
+                                $('.sub_task_data').append('<p>'+b+'</p>');
+                            });
+                            
+                            $("#subtask").val(val.subtask);
+                        }
+                        
 
-                    })    
+                    }) 
                 }
             });
         }
+
+        $('#s_subtask').change(function(e){
+            sub_task($(this).val());
+        });
 
         $('#files_form').on('submit', function (event) {
             event.preventDefault();
@@ -782,6 +821,7 @@
                     if (data.success) {
                         html = '<div class="alert alert-success">' + data.success + '</div>';
                         $('#subtask_form')[0].reset();
+                        $('.bootstrap-tagsinput > span').remove();
                         $('#subtask-table').DataTable().ajax.reload();
                     }
                     $('#subtask_result').html(html).slideDown(300).delay(5000).slideUp(300);
@@ -798,6 +838,7 @@
                     "type": "POST"
                 },
                 columns: [
+                    {"data": "category"},                    
                     { "data": "subtask" },
                     { 
                         "data": null,

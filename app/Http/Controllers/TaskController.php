@@ -276,14 +276,13 @@ class TaskController extends Controller {
 
 		if(isset($task->subtask) && $task->subtask !="")
 		{
-			$a[] = array('subtask'=>$request->subtask,'status'=>0);
+			$a[] = array('category'=>$request->category,'subtask'=>explode(',',$request->subtask),'status'=>0);
 			$sub_task = array_merge(json_decode($task->subtask),$a);
 		}
 		else
 		{
-			$sub_task[] = ['subtask'=>$request->subtask,'status'=>0];
+			$sub_task[] = ['category'=>$request->category,'subtask'=>explode(',',$request->subtask),'status'=>0];
 		}
-		
 	
 		$data['subtask'] = json_encode($sub_task);
 

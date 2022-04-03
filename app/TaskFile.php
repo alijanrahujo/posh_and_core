@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskFile extends Model
 {
 	protected $fillable = [
-		'file_title','user_id','file_attachment','file_description','task_id'
+		'file_title','user_id','file_attachment','file_description','task_id','subtask'
 	];
 
 	public function task(){
