@@ -794,6 +794,7 @@ Route::group(['middleware' => ['XSS']], function ()
 
 		Route::post('tasks/store_subtask/{task}', 'TaskController@subtask')->name('task_files.subtask');
 		Route::post('tasks/subtask/{task}', 'TaskController@dataview')->name('subtask.dataview');
+		Route::post('tasks/subtask_delete/{task}', 'TaskController@delete_subtask')->name('subtask.delete_subtask');
 
 		Route::post('tasks/{task}/discussions', 'TaskDiscussionController@index')->name('task_discussions.index');
 		Route::post('tasks/store_discussions/{task}', 'TaskDiscussionController@store')->name('task_discussions.store');

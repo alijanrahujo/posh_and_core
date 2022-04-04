@@ -27,6 +27,7 @@ class CreateTasksTable extends Migration
 			$table->string('task_progress')->nullable();
 			$table->tinyInteger('is_notify')->nullable();
 			$table->unsignedBigInteger('added_by')->nullable();
+            $table->text('subtask')->nullable();
 
 			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 			$table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');

@@ -20,6 +20,7 @@ class CreateTaskFilesTable extends Migration
 			$table->string('file_title');
 			$table->string('file_attachment');
 			$table->mediumText('file_description')->nullable();
+            $table->text('subtask')->nullable();
 
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 			$table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');

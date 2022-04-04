@@ -368,9 +368,9 @@
                                                             <label>Category</label>
                                                             <input type="text" name="category" class="form-control">
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6 form-group">
                                                         <label>Subtask</label>
-                                                    <input type="text" name="subtask" class="form-control p-4 tag" placeholder="subtask separate by comma" data-role="tagsinput">
+                                                    <input type="text" name="subtask" class="form-control" placeholder="subtask separate by comma" data-role="tagsinput">
                                                     </div>
                                                     <div class="col-md-2 form-group">
                                                         <label>&nbsp;</label>    
@@ -830,7 +830,7 @@
         });
 
 
-
+        let sr = -1;
         $('[data-table="subtask"]').one('click', function (e) {
             $('#subtask-table').DataTable( {
                 ajax: {
@@ -844,7 +844,8 @@
                         "data": null,
                         render: function(data, type, row)
                         {
-                            return `<button class="btn btn-danger btn-sm float-right" data-id="${row.subtask}"><i class="fa fa-trash"></i> Delete</button>`;
+                            sr++;
+                            return `<button class="btn btn-danger btn-sm float-right subtask_del" data-id="${sr}"><i class="fa fa-trash"></i> Delete</button>`;
                         }
                     }
                 ]
@@ -904,6 +905,30 @@
                 })
             }
 
+        });
+
+        $(document).on('click', '.subtask_del', function () {
+            if(confirm('Are you sure you want to delete the selected subtask?'))
+            {
+                let subtask_id = $(this).attr('data-id');
+
+
+                $.ajax({
+                    url: '{{ route("subtask.delete_subtask",$task) }}',
+                    method: "POST",
+                    data: {subtask_id:subtask_id},
+                    success: function (data)
+                    {
+                        if (data.success) {
+                        var html = '<div class="alert alert-success">' + data.success + '</div>';
+                        $('#subtask-table').DataTable().ajax.reload();
+                        }
+                        $('#subtask_result').html(html).slideDown(300).delay(5000).slideUp(300);
+                    }
+
+                });
+
+            }
         });
 
         $(document).on('click', '.delete-file', function () {

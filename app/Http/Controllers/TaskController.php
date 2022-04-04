@@ -314,6 +314,17 @@ class TaskController extends Controller {
 		}
 	}
 
+	public function delete_subtask(Request $request, Task $task)
+	{
+		$subtask = Task::select('subtask')->where('id',$task->id)->first();
+		$db_subtask = json_decode($subtask['subtask']);
+		unset($db_subtask[$request->subtask_id]);
+
+		$data['subtask'] = json_encode($db_subtask);
+		Task::where('id',$task->id)->update($data);
+		return response()->json(['success' => __('Subtask successfully deleted')]);
+	}
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
