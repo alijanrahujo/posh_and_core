@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\company;
 use App\Project;
 use App\Task;
+use App\Subtask;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class TaskController extends Controller {
 		$logged_user = auth()->user();
 		$companies = company::select('id', 'company_name')->get();
 		$projects = Project::select('id', 'title')->get();
+		$subtasks = Subtask::latest()->get();
 		if ($logged_user->can('view-task'))
 		{
 			if (request()->ajax())
@@ -76,7 +78,7 @@ class TaskController extends Controller {
 					->make(true);
 			}
 
-			return view('projects.task.index', compact('companies', 'projects'));
+			return view('projects.task.index', compact('companies', 'projects','subtasks'));
 		}
 
 		return abort('403', __('You are not authorized'));
@@ -136,6 +138,17 @@ class TaskController extends Controller {
 			$data ['description'] = $request->description;
 			$data ['added_by'] = $logged_user->id;
 
+			if(count($request->subtask_id) >0)
+			{
+				$subtask_data = [];
+				foreach($request->subtask_id as $subtask)
+				{
+					$subtaskdb = Subtask::select('subtask','meta')->where('id',$subtask)->first();
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0];
+				}
+
+				$data['subtask'] = json_encode($subtask_data);
+			}
 
 			$task = Task::create($data);
 			$employees = $request->input('employee_id');
@@ -174,6 +187,7 @@ class TaskController extends Controller {
 				->select('employees.id', DB::raw("CONCAT(employees.first_name,' ',employees.last_name) as full_name"))
 				->get();
 
+		
 			return view('projects.task.details', compact('task', 'employees', 'company_name', 'name'));
 		}
 

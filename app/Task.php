@@ -9,7 +9,7 @@ class Task extends Model
 {
 	protected $fillable = [
 		'task_name','project_id','company_id','start_date','end_date','task_hour','description',
-		'task_status','task_note','is_notify','added_by','task_progress'
+		'task_status','task_note','is_notify','added_by','task_progress','subtask'
 	];
 
 	public function company(){

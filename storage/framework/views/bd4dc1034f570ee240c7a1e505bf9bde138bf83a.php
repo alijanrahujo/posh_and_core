@@ -315,6 +315,11 @@
                                                 href="<?php echo e(route('tasks.index')); ?>"><?php echo e(trans(('file.Tasks'))); ?></a>
                                     </li>
                                 <?php endif; ?>
+                                <?php if(auth()->user()->role_users_id ==1): ?>
+                                    <li id="subtasks"><a
+                                                href="<?php echo e(route('subtasks.index')); ?>">Subtask</a>
+                                    </li>
+                                <?php endif; ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('client')): ?>
                                     <li id="clients"><a
                                                 href="<?php echo e(route('clients.index')); ?>"><?php echo e(trans(('file.Client'))); ?></a>

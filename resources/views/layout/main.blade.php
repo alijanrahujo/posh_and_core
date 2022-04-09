@@ -311,6 +311,11 @@
                                                 href="{{route('tasks.index')}}">{{trans(('file.Tasks'))}}</a>
                                     </li>
                                 @endcan
+                                @if(auth()->user()->role_users_id ==1)
+                                    <li id="subtasks"><a
+                                                href="{{route('subtasks.index')}}">Subtask</a>
+                                    </li>
+                                @endif
                                 @can('client')
                                     <li id="clients"><a
                                                 href="{{route('clients.index')}}">{{trans(('file.Client'))}}</a>

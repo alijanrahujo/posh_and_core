@@ -809,6 +809,12 @@ Route::group(['middleware' => ['XSS']], function ()
 		Route::get('tasks/file_download/{id}', 'TaskFileController@download')->name('tasks.downloadFile');
 		Route::post('tasks/{task}/notes', 'TaskController@notesStore')->name('task_notes.store');
 
+		Route::get('subtasks', 'SubtaskController@index')->name('subtasks.index');
+		Route::post('subtasks/store', 'SubtaskController@store')->name('subtasks.store');
+		Route::get('subtasks/{id}/edit', 'SubtaskController@edit')->name('subtasks.edit');
+		Route::post('subtasks/update', 'SubtaskController@update')->name('subtasks.update');
+		Route::get('subtasks/{id}/delete', 'SubtaskController@destroy')->name('subtasks.destroy');
+
 		{
 			Route::post('invoices/{id}/update', 'InvoiceController@update')->name('invoices.update');
 			Route::resource('invoices', 'InvoiceController')->except([

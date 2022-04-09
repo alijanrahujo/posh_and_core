@@ -111,6 +111,18 @@
                                 </select>
                             </div>
 
+
+                            <div class="col-md-6 form-group">
+                                <label><?php echo e(__('Subtask')); ?> *</label>
+                                <select name="subtask_id[]" id="subtask_id" class="js-example-responsive w-100" multiple="multiple">
+                                <?php $__currentLoopData = $subtasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subtask): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($subtask->id); ?>"><?php echo e($subtask->subtask); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>    
+                                </select>
+                            </div>
+
+
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo e(trans('file.Description')); ?></label>
@@ -687,13 +699,14 @@
             })
         });
 
-
+        
         $('.dynamic').change(function () {
             if ($(this).val() !== '') {
                 let value = $(this).val();
                 let first_name = $(this).data('first_name');
                 let last_name = $(this).data('last_name');
                 let _token = $('input[name="_token"]').val();
+
                 $.ajax({
                     url: "<?php echo e(route('dynamic_employee')); ?>",
                     method: "POST",
@@ -707,6 +720,7 @@
                 });
             }
         });
+        
 
     })(jQuery);
 </script>

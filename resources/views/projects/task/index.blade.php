@@ -112,6 +112,18 @@
                                 </select>
                             </div>
 
+
+                            <div class="col-md-6 form-group">
+                                <label>{{__('Subtask')}} *</label>
+                                <select name="subtask_id[]" id="subtask_id" class="js-example-responsive w-100" multiple="multiple">
+                                @foreach($subtasks as $subtask)
+                                        <option value="{{$subtask->id}}">{{$subtask->subtask}}</option>
+                                    @endforeach    
+                                </select>
+                            </div>
+
+
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>{{trans('file.Description')}}</label>
@@ -688,13 +700,14 @@
             })
         });
 
-
+        
         $('.dynamic').change(function () {
             if ($(this).val() !== '') {
                 let value = $(this).val();
                 let first_name = $(this).data('first_name');
                 let last_name = $(this).data('last_name');
                 let _token = $('input[name="_token"]').val();
+
                 $.ajax({
                     url: "{{ route('dynamic_employee') }}",
                     method: "POST",
@@ -708,6 +721,7 @@
                 });
             }
         });
+        
 
     })(jQuery);
 </script>
