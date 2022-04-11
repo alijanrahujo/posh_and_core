@@ -44,22 +44,37 @@
 
                         @csrf
                         <div class="row">
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 <label>Category <span class="text-danger">*</span></label>
                                 <input type="text" name="category" id="category"  placeholder="category"
                                         required class="form-control">
                             </div>
-                            <div class="col-md-6 form-group">
-                                <label>Subtask <span class="text-danger">*</span></label>
-                                <input type="text" name="subtask" id="subtask" class="form-control" data-role="tagsinput">
+                        </div>
+
+                        <div id="subtask-item">
+                        <div class="row">
+                            <div class="col-md-11 form-group">
+                                <label>Subtask 1 <span class="text-danger">*</span></label>
+                                <input type="text" name="subtask[]" class="form-control" required>
                             </div>
-                            
+                            <div class="col-md-1 form-group">
+                                <br>
+                                <button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" disabled><i class="dripicons-trash"></i></button>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-info add-subtask">Add Subtask</button>
+                            </div>
+                        </div>
+
                             <div class="container">
                                 <div class="form-group" align="center">
                                     <input type="hidden" name="action" id="action"/>
                                     <input type="hidden" name="hidden_id" id="hidden_id"/>
                                     <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                           value={{trans('file.Add')}}>
+                                           value="Save">
                                 </div>
                             </div>
                         </div>
@@ -151,7 +166,6 @@
                     {
                         data: 'subtask',
                         name: 'subtask',
-
                     },
                     {
                         data: 'meta',
@@ -179,6 +193,19 @@
                     {
                         "orderable": false,
                         'targets': [0, 3],
+                    },
+                    {
+                        'render' : function (data, type, row, meta)
+                        {
+                            var sr =0;
+                            var a = "";
+                            $.each(data, function(index, value){
+                                sr++;
+                                a +=sr+") "+ value+"<br>";
+                            })
+                            return a;
+                        },
+                        'targets': [2]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -247,7 +274,7 @@
 
         $('#sample_form').on('submit', function (event) {
             event.preventDefault();
-            
+
             if ($('#action').val() == '{{trans('file.Add')}}') {
             $.ajax({
                     url: "{{ route('subtasks.store') }}",
@@ -333,16 +360,13 @@
 
                     $('#category').val(html.data.subtask);
 
-                    
+                    $("#subtask-item").empty();
                     $.each(JSON.parse(html.data.meta), function(index, value) {
-                        $('#meta').tagsinput('add', value);
-                        //console.log(value);
+                        var id = Math.random();
+                        $("#subtask-item").append('<div class="row" id="'+id+'"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" value="'+value+'" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" id="'+id+'"><i class="dripicons-trash"></i></button></div></div>');
                     });
                    
-                    $('#meta').tagsinput('refresh');
-
-                    //$('#meta').tagsinput(html.data.meta);
-
+                    reorder();
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text('{{trans('file.Edit')}}');
                     $('#action_button').val('{{trans('file.Edit')}}');
@@ -385,6 +409,30 @@
                 }
             })
         });
+
+
+        $(".add-subtask").on('click', function(){
+
+            var id = Math.random();
+
+            $("#subtask-item").append('<div class="row" id="'+id+'"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" id="'+id+'"><i class="dripicons-trash"></i></button></div></div>');
+            reorder();
+        })
+
+        $(document).on('click', '.subtask-delete', function () {
+            var id = $(this).attr('id');
+            $(this).parent().parent().remove();
+            reorder();
+        })
     })
+
+    function reorder()
+    {
+        var sr = 0;
+        $('#subtask-item').find('label').each(function(index,value){
+            sr++;
+            var a = $(this).html('Subtask '+sr+' <span class="text-danger">*</span>');
+        });
+    }
 </script>
 @endpush

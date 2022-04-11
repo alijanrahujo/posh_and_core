@@ -28,7 +28,7 @@ class SubtaskController extends Controller
 					})
                     ->addColumn('meta', function ($data)
 					{
-						return json_decode($data->meta);
+                        return json_decode($data->meta);
 					})
 					->addColumn('action', function ($data)
 					{
@@ -106,7 +106,7 @@ class SubtaskController extends Controller
         $data = [];
 
         $data['subtask'] = $request->category;
-        $data['meta'] = json_encode(explode(',',$request->subtask));
+        $data['meta'] = json_encode($request->subtask);
 
         Subtask::create($data);
         return response()->json(['success' => __('Data Added successfully.')]);
@@ -174,7 +174,7 @@ class SubtaskController extends Controller
             $data['subtask'] = $request->category;
             if($request->subtask != "")
             {
-                $data['meta'] = json_encode(explode(',',$request->subtask));
+                $data['meta'] = json_encode($request->subtask);
             }
 			try
 			{
