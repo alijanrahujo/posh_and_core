@@ -270,7 +270,8 @@
             $('.hide-add').hide();
             $('.hide-edit').show();
             $('#formModal').modal('show');
-
+            
+            $('#category').val("");
             $("#subtask-item").html('<div class="row"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" disabled><i class="dripicons-trash"></i></button></div></div>');
             
         })
