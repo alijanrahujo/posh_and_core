@@ -152,13 +152,13 @@
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
                                        aria-controls="Notes" aria-selected="false">{{trans('file.Notes')}}</a>
                                 </li>
-                                @can('assign-task')
+                                <!-- @can('assign-task')
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
                                        aria-controls="subtask" data-table="subtask"
                                        aria-selected="false">Sub Task</a>
                                 </li>
-                                @endcan
+                                @endcan -->
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="Details" role="tabpanel"
@@ -723,6 +723,20 @@
                         "orderable": false,
                         'targets': [0, 2],
                     },
+                    {
+                        'render' : function (data, type, row, meta)
+                        {
+                            let arr = data.split(',');
+                            var sr =0;
+                            var a = "";
+                            $.each(arr, function(index, value){
+                                sr++;
+                                a +=sr+") "+ value+"<br>";
+                            })
+                            return a;
+                        },
+                        'targets': [1]
+                    },
                 ],
 
                 'select': {style: 'multi', selector: 'td:first-child'},
@@ -750,8 +764,10 @@
                         else if(category == val.category)
                         {
                             $('.sub_task_data').empty();
+                            var sr = 0;
                             $.each(val.subtask,function(a,b){
-                                $('.sub_task_data').append('<p>'+b+'</p>');
+                                sr++;
+                                $('.sub_task_data').append('<p>'+sr+"). "+b+'</p>');
                             });
                             
                             $("#subtaskinput").val(val.subtask);
