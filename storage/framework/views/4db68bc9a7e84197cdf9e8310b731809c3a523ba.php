@@ -215,6 +215,16 @@
                             </div>
 
 
+                            <div class="col-md-6 form-group">
+                                <label><?php echo e(__('Subtask')); ?> *</label>
+                                <select name="subtask_id[]" id="subtask_id" class="form-control pre-assigned"
+                                        multiple="multiple">
+                                    <?php $__currentLoopData = $subtasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subtask): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($subtask->id); ?>"><?php echo e($subtask->subtask); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo e(trans('file.Description')); ?></label>
@@ -292,8 +302,6 @@
                 autoclose: true,
                 todayHighlight: true
             });
-
-
 
 
             var table_table = $('#task-table').DataTable({
@@ -628,6 +636,7 @@
                     $('#edit_task_name').val(html.data.task_name);
                     $('#edit_project_id').selectpicker('val', html.data.project_id);
                     $('#edit_task_status').selectpicker('val', html.data.task_status);
+
                     if (html.data.description) {
                         function htmlDecode(input){
                             var e = document.createElement('div');
@@ -645,6 +654,21 @@
                             from: html.data.task_progress
                         });
                     }
+
+                    let assign = [];
+                    
+                    $.each(JSON.parse(html.data.subtask), function(index, value){
+                        assign.push(value.id);
+                    });
+                    
+
+                    $('#subtask_id').select2({
+                        placeholder: 'Assign Subtask',
+                    });
+                    $('#subtask_id').val(assign);
+                    $('#subtask_id').trigger('change');
+
+
 
                     $('#hidden_id').val(html.data.id);
                     $('#editModal').modal('show');
@@ -729,6 +753,10 @@
 #task-table
 {
     width: 100% !important;
+}
+
+.dynamic, .bootstrap-select {
+    height: 39;
 }
 </style>
 

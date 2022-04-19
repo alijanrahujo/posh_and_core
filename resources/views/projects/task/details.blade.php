@@ -152,13 +152,13 @@
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
                                        aria-controls="Notes" aria-selected="false">{{trans('file.Notes')}}</a>
                                 </li>
-                                <!-- @can('assign-task')
+                                @can('assign-task')
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
                                        aria-controls="subtask" data-table="subtask"
                                        aria-selected="false">Sub Task</a>
                                 </li>
-                                @endcan -->
+                                @endcan
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="Details" role="tabpanel"
@@ -444,13 +444,11 @@
                 autoclose: true,
                 todayHighlight: true
             });
-
             $('#employee_id').select2({
                 placeholder: '{{__('Assign Employee...')}}',
             });
             $('#employee_id').val(assigned);
             $('#employee_id').trigger('change');
-
 
             $('#assigned_form').on('submit', function (event) {
                 event.preventDefault();

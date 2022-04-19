@@ -143,8 +143,8 @@ class TaskController extends Controller {
 				$subtask_data = [];
 				foreach($request->subtask_id as $subtask)
 				{
-					$subtaskdb = Subtask::select('subtask','meta')->where('id',$subtask)->first();
-					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0];
+					$subtaskdb = Subtask::select('id','subtask','meta')->where('id',$subtask)->first();
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0,'id'=>$subtaskdb->id];
 				}
 
 				$data['subtask'] = json_encode($subtask_data);
@@ -263,6 +263,16 @@ class TaskController extends Controller {
 				$data ['task_progress'] = $request->edit_task_progress;
 			}
 
+			if(count($request->subtask_id) >0)
+			{
+				$subtask_data = [];
+				foreach($request->subtask_id as $subtask)
+				{
+					$subtaskdb = Subtask::select('id','subtask','meta')->where('id',$subtask)->first();
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0,'id'=>$subtaskdb->id];
+				}
+				$data['subtask'] = json_encode($subtask_data);
+			}
 
 			Task::find($id)->update($data);
 
