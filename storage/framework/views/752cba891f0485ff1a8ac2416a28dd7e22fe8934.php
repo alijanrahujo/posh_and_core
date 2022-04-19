@@ -151,13 +151,13 @@
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
                                        aria-controls="Notes" aria-selected="false"><?php echo e(trans('file.Notes')); ?></a>
                                 </li>
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('assign-task')): ?>
+                                <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('assign-task')): ?>
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
                                        aria-controls="subtask" data-table="subtask"
                                        aria-selected="false">Sub Task</a>
                                 </li>
-                                <?php endif; ?>
+                                <?php endif; ?> -->
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="Details" role="tabpanel"
@@ -443,7 +443,6 @@
                 autoclose: true,
                 todayHighlight: true
             });
-            assigned = [52];
             $('#employee_id').select2({
                 placeholder: '<?php echo e(__('Assign Employee...')); ?>',
             });
