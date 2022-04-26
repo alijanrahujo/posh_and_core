@@ -1,4 +1,5 @@
-<?php $__env->startSection('content'); ?>
+@extends('layout.main')
+@section('content')
 
     <section>
 
@@ -7,7 +8,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 id="exampleModalLabel" class="modal-title"><?php echo e(trans('file.Status')); ?></h5>
+                        <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Status')}}</h5>
                         <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><span
                                     aria-hidden="true">×</span></button>
                     </div>
@@ -16,16 +17,16 @@
                         <span id="bug__status_form_result"></span>
                         <form method="post" id="bug_status_form" class="form-horizontal">
 
-                            <?php echo csrf_field(); ?>
+                            @csrf
                             <div class="row">
 
                                 <div class="col-md-6 form-group">
-                                    <label><?php echo e(trans('file.Status')); ?></label>
+                                    <label>{{trans('file.Status')}}</label>
                                     <select name="bug_status" id="bug_status" class="form-control selectpicker "
                                             data-live-search="true" data-live-search-style="contains"
-                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Status')])); ?>...'>
-                                        <option value="pending"><?php echo e(trans('file.Pending')); ?></option>
-                                        <option value="solved"><?php echo e(trans('file.Solved')); ?></option>
+                                            title='{{__('Selecting',['key'=>trans('file.Status')])}}...'>
+                                        <option value="pending">{{trans('file.Pending')}}</option>
+                                        <option value="solved">{{trans('file.Solved')}}</option>
                                     </select>
                                 </div>
 
@@ -35,7 +36,7 @@
                                         <input type="hidden" name="bug_status_id" id="bug_status_id"/>
                                         <input type="submit" name="action_button" id="action_button"
                                                class="btn btn-warning"
-                                               value='<?php echo e(trans('file.Update')); ?>'/>
+                                               value='{{trans('file.Update')}}'/>
                                     </div>
                                 </div>
 
@@ -56,31 +57,31 @@
                     <div class="wrapper count-title text-center mb-30px ">
                         <div class="table-responsive">
                             <table id="task_progress" class="table ">
-                                <thead><h3><?php echo e(__('Task Details')); ?></h3></thead>
+                                <thead><h3>{{__('Task Details')}}</h3></thead>
                                 <tbody>
                                 <tr>
-                                    <th scope="row"><?php echo e(trans('file.Title')); ?></th>
-                                    <td class="text-right"><?php echo e($task->task_name); ?></td>
+                                    <th scope="row">{{trans('file.Title')}}</th>
+                                    <td class="text-right">{{$task->task_name}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo e(trans('file.Project')); ?></th>
-                                    <td class="text-right"><?php echo e($task->project->title); ?></td>
+                                    <th scope="row">{{trans('file.Project')}}</th>
+                                    <td class="text-right">{{$task->project->title}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo e(__('Created By')); ?></th>
-                                    <td class="text-right"><?php echo e($task->addedBy->username); ?></td>
+                                    <th scope="row">{{__('Created By')}}</th>
+                                    <td class="text-right">{{$task->addedBy->username}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo e(__('Start Date')); ?></th>
-                                    <td class="text-right"><?php echo e($task->start_date); ?></td>
+                                    <th scope="row">{{__('Start Date')}}</th>
+                                    <td class="text-right">{{$task->start_date}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo e(__('End Date')); ?></th>
-                                    <td class="text-right"><?php echo e($task->end_date); ?></td>
+                                    <th scope="row">{{__('End Date')}}</th>
+                                    <td class="text-right">{{$task->end_date}}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo e(__('Estimated Hours')); ?></th>
-                                    <td class="text-right"><?php echo e($task->task_hour); ?></td>
+                                    <th scope="row">{{__('Estimated Hours')}}</th>
+                                    <td class="text-right">{{$task->task_hour}}</td>
                                 </tr>
 
                                 </tbody>
@@ -89,77 +90,29 @@
                         </div>
                     </div>
 
-
-                    <div class="wrapper count-title">
-                        <div class="col-md-12 form-group">
-                            <label>Sub Task *</label>
-                            <select name="file_title" class="form-control" id="s_subtask" required>
-                                <option value="">Select Sub Task</option>
-                            </select>
-                        </div>
-
-                        <span id="progress_result"></span>
-                        <form method="post" id="progress_form" class="form-horizontal">
-                            <?php echo csrf_field(); ?>
-                            <div class="col-md-12 form-group show-edit">
-                                <label><?php echo e(trans('file.Status')); ?></label>
-                                <select name="task_status" id="task_status"
-                                        class="form-control selectpicker "
-                                        data-live-search="true" data-live-search-style="contains"
-                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Status')])); ?>...'>
-                                    <option value="not started">Not Started</option>
-                                    <option value="ongoing"><?php echo e(trans('file.Ongoing')); ?></option>
-                                    <option value="completed"><?php echo e(trans('file.Completed')); ?></option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 form-group ">
-                                <label><?php echo e(__('Progress Bar')); ?>} </label>
-                                <input type="text" name="task_progress" id="task_progress"
-                                        class="form-control range-slider "
-                                        placeholder="<?php echo e(__('Progress Bar')); ?>}">
-                            </div>
-                            
-
-                            <div class="col-md-12 form-group">
-                                <label><?php echo e(__('Estimated Hour')); ?> *</label>
-                                <input type="text" name="task_hour" id="task_hour" required
-                                        class="form-control"
-                                        value="<?php echo e($task->task_hour); ?>"
-                                        placeholder="<?php echo e(__('Estimated Hour')); ?>">
-                            </div>
-
-                            <div class="col-md-12 text-center form-group">
-                                <input type="submit" name="project_progress_submit"
-                                        id="project_progress_submit"
-                                        class="btn btn-success" value=<?php echo e(trans("file.Save")); ?>>
-                            </div>
-                        </form>
-                        
-                    </div>
-
                     <div class="wrapper count-title text-center ">
-                        <div class="card-title"><h3><?php echo e(__('Assigned To')); ?></h3></div>
+                        <div class="card-title"><h3>{{__('Assigned To')}}</h3></div>
                         <span id="assigned_result"></span>
 
                         <form method="post" id="assigned_form" class="form-horizontal">
-                            <?php echo csrf_field(); ?>
+                            @csrf
                             <div class="col-md-8 form-group">
-                                <label><?php echo e(trans('file.Employee')); ?> *</label>
+                                <label>{{trans('file.Employee')}} *</label>
                                 <select name="employee_id[]" id="employee_id" class="form-control pre-assigned"
                                         multiple="multiple">
-                                    <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $emp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($emp->id); ?>"><?php echo e($emp->full_name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    @foreach($employees as $emp)
+                                        <option value="{{$emp->id}}">{{$emp->full_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('assign-task')): ?>
+                            @can('assign-task')
                                 <div class="col-md-6 form-group">
                                     <input type="submit" name="assigned_submit" id="assigned_submit"
                                            class="btn btn-success"
-                                           value=<?php echo e(trans("file.Save")); ?>>
+                                           value={{trans("file.Save")}}>
                                 </div>
-                            <?php endif; ?>
+                            @endcan
                         </form>
                     </div>
                 </div>
@@ -173,33 +126,39 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" id="details-tab" data-toggle="tab" href="#Details"
                                        role="tab" aria-controls="Details"
-                                       aria-selected="true"><?php echo e(trans('file.Details')); ?></a>
+                                       aria-selected="true">{{trans('file.Details')}}</a>
                                 </li>
-                                <!-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" id="discussions-tab" data-toggle="tab" href="#Discussions"
                                        role="tab"
                                        aria-controls="Discussions" data-table="discussion"
-                                       aria-selected="false"><?php echo e(trans('file.Discussions')); ?></a>
-                                </li> -->
+                                       aria-selected="false">{{trans('file.Discussions')}}</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="progress-tab" data-toggle="tab" href="#Progress" role="tab"
+                                       aria-controls="Progress" data-table="progress"
+                                       aria-selected="false">{{trans('file.Progress')}}</a>
+                                </li>
 
 
                                 <li class="nav-item">
                                     <a class="nav-link" id="files-tab" data-toggle="tab" href="#Files" role="tab"
                                        aria-controls="Files" data-table="files"
-                                       aria-selected="false"><?php echo e(trans('file.Progress')); ?></a>
+                                       aria-selected="false">{{trans('file.Files')}}</a>
                                 </li>
 
-                                <!-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
-                                       aria-controls="Notes" aria-selected="false"><?php echo e(trans('file.Notes')); ?></a>
-                                </li> -->
-                                <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('assign-task')): ?>
+                                       aria-controls="Notes" aria-selected="false">{{trans('file.Notes')}}</a>
+                                </li>
+                                <!-- @can('assign-task')
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
                                        aria-controls="subtask" data-table="subtask"
                                        aria-selected="false">Sub Task</a>
                                 </li>
-                                <?php endif; ?> -->
+                                @endcan -->
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="Details" role="tabpanel"
@@ -207,7 +166,7 @@
                                     <!--Contents for Details starts here-->
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <div class="card-title"><h2><?php echo e(trans('file.Details')); ?></h2></div>
+                                            <div class="card-title"><h2>{{trans('file.Details')}}</h2></div>
                                             <div id="task_description"></div>
                                         </div>
                                     </div>
@@ -216,112 +175,25 @@
 
                                 <div class="tab-pane fade" id="Discussions" role="tabpanel"
                                      aria-labelledby="discussions-tab">
-                                    
-                                </div>
-
-                                
-
-
-                                <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="files-tab">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <div class="card-title"><h2><?php echo e(trans('file.Files')); ?></h2></div>
-                                            <span id="files_result"></span>
-                                            <form method="post" id="files_form" class="form-horizontal"
-                                                  enctype="multipart/form-data">
-                                                <?php echo csrf_field(); ?>
-                                                <div class="row">
-                                                
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label><?php echo e(trans('file.Description')); ?></label>
-                                                        <textarea required class="form-control" id="file_description"
-                                                                  name="file_description" rows="3"></textarea>
-                                                    </div>
-                                                </div>
-                                                
-                                               
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Description</th>
-                                                            <th width="30%">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="sub_task_data">
-                                                        
-                                                    </tbody>
-
-                                                </table>
-                                                
-                                                    
-                                                </div>
-                                                <input type="hidden" name="file_title" id="subtasktitle" required>
-                                                <input type="hidden" name="subtask" id="subtaskinput">
-                                                <input type="hidden" name="type" id="subtasktype">
-
-                                                <!-- <div class="col-md-6 form-group">
-                                                    <label><?php echo e(trans('file.Title')); ?> *</label>
-                                                    <input type="text" name="file_title" id="file_title" required
-                                                           class="form-control"
-                                                           placeholder="<?php echo e(trans('file.Title')); ?>">
-                                                </div> -->
-
-                                                
-
-                                                <!-- <div class="col-md-6 form-group">
-                                                    <label><?php echo e(trans('file.Attachments')); ?> </label>
-                                                    <input type="file" name="file_attachment" id="file_attachment"
-                                                           class="form-control">
-                                                </div> -->
-
-                                                
-
-                                                <div class="col-md-12 form-group text-right">
-                                                <label>&nbsp;</label>
-                                                    <br>
-                                                    <input type="submit" name="file_submit" id="file_submit"
-                                                           class="btn btn-success px-5 float-right" value=<?php echo e(trans("file.Save")); ?>>
-                                                </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                            <br>
-                                        <div class="table-responsive">
-                                            <table id="files-table" class="table ">
-                                                <thead>
-                                                <tr>
-                                                    <th><?php echo e(trans('file.Title')); ?></th>
-                                                    <th>Sub Task</th>
-                                                    <th><?php echo e(trans('file.Description')); ?></th>
-                                                    <th><?php echo e(__('Date and Time')); ?></th>
-                                                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-
-
-                                        <div class="col-md-12">
-                                            <div class="card-title"><h2><?php echo e(trans('file.Discussions')); ?></h2></div>
+                                            <div class="card-title"><h2>{{trans('file.Discussions')}}</h2></div>
                                             <span id="discussions_result"></span>
-                                            <form method="post" id="discussions_form" class="form-horizontal">
-                                                <?php echo csrf_field(); ?>
-                                                <div class="row">
-                                                    <div class="col-md-10">
-                                                        <div class="form-group">
-                                                            <label><?php echo e(trans('file.Discussions')); ?></label>
-                                                            <textarea required class="form-control" id="task_discussions"
-                                                                    name="task_discussions" rows="3"></textarea>
-                                                        </div>
+                                            <form method="post" id="discussions_form" class="form-horizontal"
+                                            >
+                                                @csrf
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{trans('file.Discussions')}}</label>
+                                                        <textarea required class="form-control" id="task_discussions"
+                                                                  name="task_discussions" rows="3"></textarea>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-md-2 form-group">
-                                                        <br><br>
-                                                        <input type="submit" name="discussions_submit"
-                                                            id="discussions_submit"
-                                                            class="btn btn-success" value=<?php echo e(trans("file.Save")); ?>>
-                                                    </div>
+                                                <div class="col-md-6 form-group">
+                                                    <input type="submit" name="discussions_submit"
+                                                           id="discussions_submit"
+                                                           class="btn btn-success" value={{trans("file.Save")}}>
                                                 </div>
                                             </form>
                                         </div>
@@ -330,9 +202,126 @@
                                             <table id="discussions-table" class="table ">
                                                 <thead>
                                                 <tr>
-                                                    <th><?php echo e(trans('file.User')); ?></th>
-                                                    <th><?php echo e(trans('file.Message')); ?></th>
-                                                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
+                                                    <th>{{trans('file.User')}}</th>
+                                                    <th>{{trans('file.Message')}}</th>
+                                                    <th class="not-exported">{{trans('file.action')}}</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="Progress" role="tabpanel" aria-labelledby="progress-tab">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="card-title"><h2>{{__('Task Progress')}}</h2></div>
+                                            <span id="progress_result"></span>
+                                            <form method="post" id="progress_form" class="form-horizontal">
+                                                @csrf
+                                                <div class="col-md-8 form-group ">
+                                                    <label>{{__('Progress Bar')}}} </label>
+                                                    <input type="text" name="task_progress" id="task_progress"
+                                                           class="form-control range-slider "
+                                                           placeholder="{{__('Progress Bar')}}}">
+                                                </div>
+                                                <div class="col-md-6 form-group show-edit">
+                                                    <label>{{trans('file.Status')}}</label>
+                                                    <select name="task_status" id="task_status"
+                                                            class="form-control selectpicker "
+                                                            data-live-search="true" data-live-search-style="contains"
+                                                            title='{{__('Selecting',['key'=>trans('file.Status')])}}...'>
+                                                        <option value="not started">Not Started</option>
+                                                        <option value="ongoing">{{trans('file.Ongoing')}}</option>
+                                                        <option value="completed">{{trans('file.Completed')}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label>{{__('Estimated Hour')}} *</label>
+                                                    <input type="text" name="task_hour" id="task_hour" required
+                                                           class="form-control"
+                                                           value="{{$task->task_hour}}"
+                                                           placeholder="{{__('Estimated Hour')}}">
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <input type="submit" name="project_progress_submit"
+                                                           id="project_progress_submit"
+                                                           class="btn btn-success" value={{trans("file.Save")}}>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="files-tab">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="card-title"><h2>{{trans('file.Files')}}</h2></div>
+                                            <span id="files_result"></span>
+                                            <form method="post" id="files_form" class="form-horizontal"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="row">
+
+                                                
+                                                <div class="col-md-12 form-group">
+                                                    <label>Sub Task *</label>
+                                                    <select name="file_title" class="form-control" id="s_subtask" required>
+                                                        <option value="">Select Sub Task</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-12 sub_task_data">
+                                                    
+                                                </div>
+                                                <input type="hidden" name="subtask" id="subtaskinput">
+
+                                                <!-- <div class="col-md-6 form-group">
+                                                    <label>{{trans('file.Title')}} *</label>
+                                                    <input type="text" name="file_title" id="file_title" required
+                                                           class="form-control"
+                                                           placeholder="{{trans('file.Title')}}">
+                                                </div> -->
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{trans('file.Description')}}</label>
+                                                        <textarea required class="form-control" id="file_description"
+                                                                  name="file_description" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label>{{trans('file.Attachments')}} </label>
+                                                    <input type="file" name="file_attachment" id="file_attachment"
+                                                           class="form-control">
+                                                </div>
+
+                                                
+
+                                                <div class="col-md-6 form-group">
+                                                <label>&nbsp;</label>
+                                                    <br>
+                                                    <input type="submit" name="file_submit" id="file_submit"
+                                                           class="btn btn-success px-5 float-right" value={{trans("file.Save")}}>
+                                                </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table id="files-table" class="table ">
+                                                <thead>
+                                                <tr>
+                                                    <th>{{trans('file.Title')}}</th>
+                                                    <th>Sub Task</th>
+                                                    <th>{{trans('file.Description')}}</th>
+                                                    <th>{{__('Date and Time')}}</th>
+                                                    <th class="not-exported">{{trans('file.action')}}</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -345,22 +334,22 @@
                                 <div class="tab-pane fade" id="Notes" role="tabpanel" aria-labelledby="notes-tab">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <div class="card-title"><h2><?php echo e(__('Project Note')); ?></h2></div>
+                                            <div class="card-title"><h2>{{__('Project Note')}}</h2></div>
                                             <span id="note_result"></span>
                                             <form method="post" id="note_form" class="form-horizontal">
-                                                <?php echo csrf_field(); ?>
+                                                @csrf
                                                 <div class="col-md-8">
                                                     <div class="form-group">
-                                                        <label><?php echo e(__('Project Note')); ?></label>
+                                                        <label>{{__('Project Note')}}</label>
                                                         <textarea required class="form-control" id="task_note"
                                                                   name="task_note"
-                                                                  rows="3"><?php echo e($task->task_note); ?></textarea>
+                                                                  rows="3">{{$task->task_note}}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     <input type="submit" name="task_note_submit"
                                                            id="task_note_submit"
-                                                           class="btn btn-success" value=<?php echo e(trans("file.Save")); ?>>
+                                                           class="btn btn-success" value={{trans("file.Save")}}>
                                                 </div>
                                             </form>
                                         </div>
@@ -373,7 +362,7 @@
                                             <div class="card-title"><h2>Sub Task</h2></div>
                                             <span id="subtask_result"></span>
                                             <form method="post" id="subtask_form" class="form-horizontal">
-                                                <?php echo csrf_field(); ?>
+                                                @csrf
                                                 <div class="row">
                                                     <div class="col-md-4 form-group">
                                                             <label>Category</label>
@@ -388,7 +377,7 @@
                                                         <br>
                                                         <input type="submit" name="task_subtask_submit"
                                                             id="task_subtask_submit"
-                                                            class="btn btn-success" value=<?php echo e(trans("file.Save")); ?>>
+                                                            class="btn btn-success" value={{trans("file.Save")}}>
                                                     </div>
                                                 </div>
                                             </form>
@@ -400,7 +389,7 @@
                                                 <tr>
                                                     <th>Category</th>
                                                     <th>Sub Task</th>
-                                                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
+                                                    <th class="not-exported">{{trans('file.action')}}</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -424,9 +413,9 @@
     }
 </style>
 
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
 <script type="text/javascript">
     (function($) {
         "use strict";
@@ -451,12 +440,12 @@
 
             let date = $('.date');
             date.datepicker({
-                format: '<?php echo e(env('Date_Format_JS')); ?>',
+                format: '{{ env('Date_Format_JS')}}',
                 autoclose: true,
                 todayHighlight: true
             });
             $('#employee_id').select2({
-                placeholder: '<?php echo e(__('Assign Employee...')); ?>',
+                placeholder: '{{__('Assign Employee...')}}',
             });
             $('#employee_id').val(assigned);
             $('#employee_id').trigger('change');
@@ -465,7 +454,7 @@
                 event.preventDefault();
 
                 $.ajax({
-                    url: "<?php echo e(route('tasks.assigned',$task)); ?>",
+                    url: "{{ route('tasks.assigned',$task) }}",
                     method: "POST",
                     data: new FormData(this),
                     contentType: false,
@@ -495,7 +484,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "<?php echo e(route('task_progress.store',$task)); ?>",
+                url: "{{ route('task_progress.store',$task) }}",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -519,7 +508,7 @@
             })
         });
 
-        $('[data-table="files"]').one('click', function (e) {
+        $('[data-table="discussion"]').one('click', function (e) {
 
             $('#discussions-table').DataTable().clear().destroy();
 
@@ -553,7 +542,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "<?php echo e(route('task_discussions.index',$task)); ?>",
+                    url: "{{ route('task_discussions.index',$task) }}",
                     method: "post"
                 },
 
@@ -582,12 +571,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
                 'columnDefs': [
@@ -607,7 +596,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "<?php echo e(route('task_discussions.store',$task)); ?>",
+                url: "{{ route('task_discussions.store',$task) }}",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -648,10 +637,9 @@
             from: task_progress,
         });
 
-        sub_task();
 
         $('[data-table="files"]').one('click', function (e) {
-            
+            sub_task();
 
             $('#files-table').DataTable().clear().destroy();
 
@@ -685,7 +673,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "<?php echo e(route('task_files.index',$task)); ?>",
+                    url: "{{ route('task_files.index',$task) }}",
                     method: "post"
                 },
 
@@ -720,12 +708,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
                 'columnDefs': [
@@ -733,7 +721,20 @@
                         "orderable": false,
                         'targets': [0, 2],
                     },
-                    
+                    {
+                        'render' : function (data, type, row, meta)
+                        {
+                            let arr = data.split(',');
+                            var sr =0;
+                            var a = "";
+                            $.each(arr, function(index, value){
+                                sr++;
+                                a +=sr+") "+ value+"<br>";
+                            })
+                            return a;
+                        },
+                        'targets': [1]
+                    },
                 ],
 
                 'select': {style: 'multi', selector: 'td:first-child'},
@@ -745,7 +746,7 @@
         function sub_task(category='')
         {
             $.ajax({
-                url: "<?php echo e(route('task_files.getsubtask',$task)); ?>",
+                url: "{{ route('task_files.getsubtask',$task) }}",
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -753,11 +754,7 @@
                 dataType: "json",
                 success: function(data)
                 {
-                    var result = JSON.parse(data);
-
-                    //console.log(result);
-
-                    $.each(result,function(index,val){
+                    $.each(JSON.parse(data),function(index,val){
                         if(category =='')
                         {
                             $("#s_subtask").append('<option>'+val.category+'</option>');
@@ -766,34 +763,12 @@
                         {
                             $('.sub_task_data').empty();
                             var sr = 0;
-
-                            $.each(val[0].subtask,function(a,b){
+                            $.each(val.subtask,function(a,b){
                                 sr++;
-                                var data_list = '<tr><td>'+sr+"). "+b+'</td>';
-
-                                data_list += subtasklist(val[0].status[a])
-                                data_list += '</tr>';
-                                $('.sub_task_data').append(data_list);
+                                $('.sub_task_data').append('<p>'+sr+"). "+b+'</p>');
                             });
                             
-                            function subtasklist($value)
-                            {
-                                if($value == 'Plan text')
-                                {
-                                    return '<td>&nbsp;</td>';
-                                }
-                                else if($value == 'File')
-                                {
-                                    return '<td><input type="file" name="file_attachment[]" id="file_attachment" class="form-control"></td>';
-                                }
-                                else if($value == 'Remarks')
-                                {
-                                    return '<td><input type="text" name="remarks[]" class="form-control"></td>';
-                                }
-                            }
-                            $("#subtasktitle").val(val.category);
-                            $("#subtaskinput").val(val[0].subtask);
-                            $("#subtasktype").val(val[0].status);
+                            $("#subtaskinput").val(val.subtask);
                         }
                         
 
@@ -809,7 +784,7 @@
         $('#files_form').on('submit', function (event) {
             event.preventDefault();
             $.ajax({
-                url: "<?php echo e(route('task_files.store',$task)); ?>",
+                url: "{{ route('task_files.store',$task) }}",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -840,7 +815,7 @@
             event.preventDefault();
             
             $.ajax({
-                url: "<?php echo e(route('task_files.subtask',$task)); ?>",
+                url: "{{ route('task_files.subtask',$task) }}",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -873,7 +848,7 @@
         $('[data-table="subtask"]').one('click', function (e) {
             $('#subtask-table').DataTable( {
                 ajax: {
-                    "url": '<?php echo e(route("subtask.dataview",$task)); ?>',
+                    "url": '{{ route("subtask.dataview",$task) }}',
                     "type": "POST"
                 },
                 columns: [
@@ -895,7 +870,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "<?php echo e(route('task_notes.store',$task)); ?>",
+                url: "{{ route('task_notes.store',$task) }}",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -921,10 +896,10 @@
 
         $(document).on('click', '.delete-discussion', function () {
 
-            if (confirm('<?php echo e(__('Delete Selection',['key'=>trans('file.Discussions')])); ?>')) {
+            if (confirm('{{__('Delete Selection',['key'=>trans('file.Discussions')])}}')) {
 
                 let delete_id = $(this).attr('id');
-                let target = "<?php echo e(route('tasks.index')); ?>/" + delete_id + '/delete_discussions';
+                let target = "{{ route('tasks.index') }}/" + delete_id + '/delete_discussions';
                 $.ajax({
                     url: target,
                     success: function (data) {
@@ -953,7 +928,7 @@
 
 
                 $.ajax({
-                    url: '<?php echo e(route("subtask.delete_subtask",$task)); ?>',
+                    url: '{{ route("subtask.delete_subtask",$task) }}',
                     method: "POST",
                     data: {subtask_id:subtask_id},
                     success: function (data)
@@ -972,10 +947,10 @@
 
         $(document).on('click', '.delete-file', function () {
 
-            if (confirm('<?php echo e(__('Delete Selection',['key'=>trans('file.Files')])); ?>')) {
+            if (confirm('{{__('Delete Selection',['key'=>trans('file.Files')])}}')) {
 
                 let delete_id = $(this).attr('id');
-                let target = "<?php echo e(route('tasks.index')); ?>/" + delete_id + '/delete_files';
+                let target = "{{ route('tasks.index') }}/" + delete_id + '/delete_files';
                 $.ajax({
                     url: target,
                     success: function (data) {
@@ -999,6 +974,4 @@
 
     })(jQuery);
 </script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/projects/task/details.blade.php ENDPATH**/ ?>
+@endpush

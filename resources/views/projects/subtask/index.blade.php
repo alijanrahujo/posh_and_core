@@ -21,6 +21,7 @@
                     <th class="not-exported"></th>
                     <th>Category</th>
                     <th>Subtask</th>
+                    <th>Type</th>
                     <th class="not-exported text-center">{{trans('file.action')}}</th>
                 </tr>
                 </thead>
@@ -53,7 +54,11 @@
 
                         <div id="subtask-item">
                         <div class="row">
-                            <div class="col-md-11 form-group">
+                            <div class="col-md-9 form-group">
+                                <label>Subtask 1 <span class="text-danger">*</span></label>
+                                <input type="text" name="subtask[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-2 form-group">
                                 <label>Subtask 1 <span class="text-danger">*</span></label>
                                 <input type="text" name="subtask[]" class="form-control" required>
                             </div>
@@ -172,6 +177,10 @@
                         name: 'meta',
                     },
                     {
+                        data: 'type',
+                        name: 'type',
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false
@@ -206,6 +215,19 @@
                             return a;
                         },
                         'targets': [2]
+                    },
+                    {
+                        'render' : function (data, type, row, meta)
+                        {
+                            var sr =0;
+                            var a = "";
+                            $.each(data, function(index, value){
+                                sr++;
+                                a +=sr+") "+ value+"<br>";
+                            })
+                            return a;
+                        },
+                        'targets': [3]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -272,7 +294,7 @@
             $('#formModal').modal('show');
             
             $('#category').val("");
-            $("#subtask-item").html('<div class="row"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" disabled><i class="dripicons-trash"></i></button></div></div>');
+            $("#subtask-item").html('<div class="row"><div class="col-md-9 form-group"><label class="subtask">Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-2 form-group"><label class="type">Type 1 </label><select name="type[]" class="form-control"><option>Plan text</option><option>File</option><option>Remarks</option></select></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" disabled><i class="dripicons-trash"></i></button></div></div>');
             
         })
 
@@ -361,13 +383,36 @@
                 url: target,
                 dataType: "json",
                 success: function (html) {
-
+                    var meta = JSON.parse(html.data.meta);
+                    var opt = ['Plan text','File','Remarks'];
+                    //console.log(meta);
                     $('#category').val(html.data.subtask);
+                    
 
                     $("#subtask-item").empty();
-                    $.each(JSON.parse(html.data.meta), function(index, value) {
-                        var id = Math.random();
-                        $("#subtask-item").append('<div class="row" id="'+id+'"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" value="'+value+'" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" id="'+id+'"><i class="dripicons-trash"></i></button></div></div>');
+                    $.each(meta.subtask, function(index, value) {
+                            let a = meta.subtask[index];
+                            let b = meta.status[index];
+
+                            var id = Math.random();
+
+                            var result = '<div class="row" id="'+id+'"><div class="col-md-9 form-group"><label class="subtask">Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" value="'+value+'" class="form-control" required></div><div class="col-md-2 form-group"><label class="type">Type 1 </label><select name="type[]" class="form-control">';
+                            
+                            for(i=0; i<opt.length; i++)
+                            {
+                                if(opt[i] == b)
+                                {
+                                    result += '<option selected>'+opt[i]+'</option>';
+                                }
+                                else
+                                {
+                                    result += '<option>'+opt[i]+'</option>';
+                                }   
+                            }
+                            
+                            result +='</select></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2"  id="'+id+'"><i class="dripicons-trash"></i></button></div></div>';
+
+                            $("#subtask-item").append(result);
                     });
                    
                     reorder();
@@ -416,10 +461,8 @@
 
 
         $(".add-subtask").on('click', function(){
-
             var id = Math.random();
-
-            $("#subtask-item").append('<div class="row" id="'+id+'"><div class="col-md-11 form-group"><label>Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2" id="'+id+'"><i class="dripicons-trash"></i></button></div></div>');
+            $("#subtask-item").append('<div class="row" id="'+id+'"><div class="col-md-9 form-group"><label class="subtask">Subtask 1 <span class="text-danger">*</span></label><input type="text" name="subtask[]" class="form-control" required></div><div class="col-md-2 form-group"><label class="type">Type 1 </label><select name="type[]" class="form-control"><option>Plan text</option><option>File</option><option>Remarks</option></select></div><div class="col-md-1 form-group"><br><button type="button" class="subtask-delete btn btn-danger btn-sm mt-2"  id="'+id+'"><i class="dripicons-trash"></i></button></div></div>');
             reorder();
         })
 
@@ -433,9 +476,15 @@
     function reorder()
     {
         var sr = 0;
-        $('#subtask-item').find('label').each(function(index,value){
+        $('#subtask-item').find('.subtask').each(function(index,value){
             sr++;
             var a = $(this).html('Subtask '+sr+' <span class="text-danger">*</span>');
+        });
+
+        var sr = 0;
+        $('#subtask-item').find('.type').each(function(index,value){
+            sr++;
+            var a = $(this).html('Type '+sr+' <span class="text-danger">*</span>');
         });
     }
 </script>

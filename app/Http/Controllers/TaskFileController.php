@@ -23,11 +23,33 @@ class TaskFileController extends Controller {
 				{
 					if ($row->file_description)
 					{
-						return $row->file_description . '<br><h6><a href="' . route('tasks.downloadFile', $row->id) . '">' . trans('file.File') . '</a></h6>';
+						return $row->file_description;
 					} else
 					{
 						return '';
 					}
+				})
+				->addColumn('subtask', function ($row)
+				{
+					$result ="";
+					$subtask = json_decode($row->subtask);
+					foreach($subtask->subtask as $key=>$value)
+					{
+						$result .= $key+1;
+						$result .=") ".$value;
+						if($subtask->file[$key] != '')
+						{
+							$result .= ' (<a href="' . route('tasks.downloadFile',$subtask->file[$key]) . '">' . trans('file.File') . '</a>)';
+						}
+						if($subtask->Remarks[$key] != '')
+						{
+							$result .= " (".$subtask->Remarks[$key].")";
+						}
+						$result .="<br>";
+					}
+
+					return $result;
+
 				})
 				->addColumn('action', function ($data)
 				{
@@ -36,7 +58,7 @@ class TaskFileController extends Controller {
 
 					return $button;
 				})
-				->rawColumns(['action', 'file_description'])
+				->rawColumns(['action', 'file_description','subtask'])
 				->make(true);
 
 		}
@@ -45,10 +67,12 @@ class TaskFileController extends Controller {
 	public function store(Request $request, Task $task)
 	{
 
-		$validator = Validator::make($request->only('file_title', 'file_description', 'file_attachment'),
+		$validator = Validator::make($request->only('file_title', 'file_description', 'file_attachment','remarks','subtask'),
 			[
 				'file_title' => 'required',
-				'file_attachment' => 'required|file|max:10240|mimes:jpeg,png,jpg,gif,ppt,pptx,doc,docx,pdf',
+				'file_attachment.*' => 'required|file|max:10240|mimes:jpeg,png,jpg,gif,ppt,pptx,doc,docx,pdf',
+				'remarks.*' => 'required',
+				'subtask.*' => 'required',
 			]
 		);
 
@@ -59,14 +83,61 @@ class TaskFileController extends Controller {
 		}
 
 		$data = [];
+		
+		$subtask = explode(',',$request->subtask);
+		$type = explode(',',$request->type);
+		$subtaskarray = array();
+		$i =0;
+		$j = 0;
+		foreach($subtask as $key=>$subtask)
+		{
+			$subtaskarray['subtask'][] = $subtask;
+			if($type[$key] == "File")
+			{
+				$file = $request->file_attachment[$i];
+				$i++;
+				if (isset($file))
+				{
+					if ($file->isValid())
+					{
+						$file_name = 'task_file_' . time() . '.' . $file->getClientOriginalExtension();
+						$file->storeAs('task_file_attachments', $file_name);
+						$subtaskarray['file'][] = $file_name;
+					}
+					else
+					{
+						$subtaskarray['file'][] = "";
+					}
+				}
+				else
+				{
+					$subtaskarray['file'][] = "";
+				}
+			}
+			else
+			{
+				$subtaskarray['file'][] = "";
+			}
+
+			if($type[$key] == "Remarks")
+			{
+				$subtaskarray['Remarks'][] = $request->remarks[$j];
+				$j++;
+			}
+			else
+			{
+				$subtaskarray['Remarks'][] = "";
+			}
+		}
+		
 
 		$data['file_description'] = $request->get('file_description');
 		$data['file_title'] = $request->file_title;
-		$data['subtask'] = $request->subtask;
+		$data['subtask'] = json_encode($subtaskarray);
 		$data ['task_id'] = $task->id;
 
-		$file = $request->file_attachment;
-
+		/*
+		$file = $request->file_attachment[0];
 		$file_name = null;
 
 		if (isset($file))
@@ -78,6 +149,7 @@ class TaskFileController extends Controller {
 				$data['file_attachment'] = $file_name;
 			}
 		}
+		*/
 
 		TaskFile::create($data);
 
@@ -107,10 +179,10 @@ class TaskFileController extends Controller {
 	public function download($id)
 	{
 
-		$file = TaskFile::findOrFail($id);
+		//$file = TaskFile::findOrFail($id);
 
-		$file_path = $file->file_attachment;
-
+		//$file_path = $file->file_attachment;
+		$file_path = $id;
 		$download_path = public_path("uploads/task_file_attachments/" . $file_path);
 
 		if (file_exists($download_path))

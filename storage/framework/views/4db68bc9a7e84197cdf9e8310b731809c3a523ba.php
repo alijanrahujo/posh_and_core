@@ -661,7 +661,6 @@
                         assign.push(value.id);
                     });
                     
-
                     $('#subtask_id').select2({
                         placeholder: 'Assign Subtask',
                     });

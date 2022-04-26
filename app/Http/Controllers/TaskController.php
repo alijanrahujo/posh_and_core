@@ -144,9 +144,8 @@ class TaskController extends Controller {
 				foreach($request->subtask_id as $subtask)
 				{
 					$subtaskdb = Subtask::select('id','subtask','meta')->where('id',$subtask)->first();
-					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0,'id'=>$subtaskdb->id];
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,json_decode($subtaskdb->meta),'id'=>$subtaskdb->id];
 				}
-
 				$data['subtask'] = json_encode($subtask_data);
 			}
 
@@ -269,7 +268,7 @@ class TaskController extends Controller {
 				foreach($request->subtask_id as $subtask)
 				{
 					$subtaskdb = Subtask::select('id','subtask','meta')->where('id',$subtask)->first();
-					$subtask_data[] = ['category'=>$subtaskdb->subtask,'subtask'=>json_decode($subtaskdb->meta),'status'=>0,'id'=>$subtaskdb->id];
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,json_decode($subtaskdb->meta),'id'=>$subtaskdb->id];
 				}
 				$data['subtask'] = json_encode($subtask_data);
 			}

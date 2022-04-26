@@ -90,6 +90,54 @@
                         </div>
                     </div>
 
+
+                    <div class="wrapper count-title">
+                        <div class="col-md-12 form-group">
+                            <label>Sub Task *</label>
+                            <select name="file_title" class="form-control" id="s_subtask" required>
+                                <option value="">Select Sub Task</option>
+                            </select>
+                        </div>
+
+                        <span id="progress_result"></span>
+                        <form method="post" id="progress_form" class="form-horizontal">
+                            @csrf
+                            <div class="col-md-12 form-group show-edit">
+                                <label>{{trans('file.Status')}}</label>
+                                <select name="task_status" id="task_status"
+                                        class="form-control selectpicker "
+                                        data-live-search="true" data-live-search-style="contains"
+                                        title='{{__('Selecting',['key'=>trans('file.Status')])}}...'>
+                                    <option value="not started">Not Started</option>
+                                    <option value="ongoing">{{trans('file.Ongoing')}}</option>
+                                    <option value="completed">{{trans('file.Completed')}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group ">
+                                <label>{{__('Progress Bar')}}} </label>
+                                <input type="text" name="task_progress" id="task_progress"
+                                        class="form-control range-slider "
+                                        placeholder="{{__('Progress Bar')}}}">
+                            </div>
+                            
+
+                            <div class="col-md-12 form-group">
+                                <label>{{__('Estimated Hour')}} *</label>
+                                <input type="text" name="task_hour" id="task_hour" required
+                                        class="form-control"
+                                        value="{{$task->task_hour}}"
+                                        placeholder="{{__('Estimated Hour')}}">
+                            </div>
+
+                            <div class="col-md-12 text-center form-group">
+                                <input type="submit" name="project_progress_submit"
+                                        id="project_progress_submit"
+                                        class="btn btn-success" value={{trans("file.Save")}}>
+                            </div>
+                        </form>
+                        
+                    </div>
+
                     <div class="wrapper count-title text-center ">
                         <div class="card-title"><h3>{{__('Assigned To')}}</h3></div>
                         <span id="assigned_result"></span>
@@ -128,30 +176,24 @@
                                        role="tab" aria-controls="Details"
                                        aria-selected="true">{{trans('file.Details')}}</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" id="discussions-tab" data-toggle="tab" href="#Discussions"
                                        role="tab"
                                        aria-controls="Discussions" data-table="discussion"
                                        aria-selected="false">{{trans('file.Discussions')}}</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" id="progress-tab" data-toggle="tab" href="#Progress" role="tab"
-                                       aria-controls="Progress" data-table="progress"
-                                       aria-selected="false">{{trans('file.Progress')}}</a>
-                                </li>
+                                </li> -->
 
 
                                 <li class="nav-item">
                                     <a class="nav-link" id="files-tab" data-toggle="tab" href="#Files" role="tab"
                                        aria-controls="Files" data-table="files"
-                                       aria-selected="false">{{trans('file.Files')}}</a>
+                                       aria-selected="false">{{trans('file.Progress')}}</a>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" id="notes-tab" data-toggle="tab" href="#Notes" role="tab"
                                        aria-controls="Notes" aria-selected="false">{{trans('file.Notes')}}</a>
-                                </li>
+                                </li> -->
                                 <!-- @can('assign-task')
                                 <li class="nav-item">
                                     <a class="nav-link" id="subtask-tab" data-toggle="tab" href="#subtask" role="tab"
@@ -175,86 +217,10 @@
 
                                 <div class="tab-pane fade" id="Discussions" role="tabpanel"
                                      aria-labelledby="discussions-tab">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="card-title"><h2>{{trans('file.Discussions')}}</h2></div>
-                                            <span id="discussions_result"></span>
-                                            <form method="post" id="discussions_form" class="form-horizontal"
-                                            >
-                                                @csrf
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>{{trans('file.Discussions')}}</label>
-                                                        <textarea required class="form-control" id="task_discussions"
-                                                                  name="task_discussions" rows="3"></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 form-group">
-                                                    <input type="submit" name="discussions_submit"
-                                                           id="discussions_submit"
-                                                           class="btn btn-success" value={{trans("file.Save")}}>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table id="discussions-table" class="table ">
-                                                <thead>
-                                                <tr>
-                                                    <th>{{trans('file.User')}}</th>
-                                                    <th>{{trans('file.Message')}}</th>
-                                                    <th class="not-exported">{{trans('file.action')}}</th>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-
-                                    </div>
+                                    
                                 </div>
 
-                                <div class="tab-pane fade" id="Progress" role="tabpanel" aria-labelledby="progress-tab">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="card-title"><h2>{{__('Task Progress')}}</h2></div>
-                                            <span id="progress_result"></span>
-                                            <form method="post" id="progress_form" class="form-horizontal">
-                                                @csrf
-                                                <div class="col-md-8 form-group ">
-                                                    <label>{{__('Progress Bar')}}} </label>
-                                                    <input type="text" name="task_progress" id="task_progress"
-                                                           class="form-control range-slider "
-                                                           placeholder="{{__('Progress Bar')}}}">
-                                                </div>
-                                                <div class="col-md-6 form-group show-edit">
-                                                    <label>{{trans('file.Status')}}</label>
-                                                    <select name="task_status" id="task_status"
-                                                            class="form-control selectpicker "
-                                                            data-live-search="true" data-live-search-style="contains"
-                                                            title='{{__('Selecting',['key'=>trans('file.Status')])}}...'>
-                                                        <option value="not started">Not Started</option>
-                                                        <option value="ongoing">{{trans('file.Ongoing')}}</option>
-                                                        <option value="completed">{{trans('file.Completed')}}</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-6 form-group">
-                                                    <label>{{__('Estimated Hour')}} *</label>
-                                                    <input type="text" name="task_hour" id="task_hour" required
-                                                           class="form-control"
-                                                           value="{{$task->task_hour}}"
-                                                           placeholder="{{__('Estimated Hour')}}">
-                                                </div>
-
-                                                <div class="col-md-6 form-group">
-                                                    <input type="submit" name="project_progress_submit"
-                                                           id="project_progress_submit"
-                                                           class="btn btn-success" value={{trans("file.Save")}}>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
 
                                 <div class="tab-pane fade" id="Files" role="tabpanel" aria-labelledby="files-tab">
@@ -266,19 +232,34 @@
                                                   enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="row">
-
                                                 
-                                                <div class="col-md-12 form-group">
-                                                    <label>Sub Task *</label>
-                                                    <select name="file_title" class="form-control" id="s_subtask" required>
-                                                        <option value="">Select Sub Task</option>
-                                                    </select>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{trans('file.Description')}}</label>
+                                                        <textarea required class="form-control" id="file_description"
+                                                                  name="file_description" rows="3"></textarea>
+                                                    </div>
                                                 </div>
+                                                
+                                               
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Description</th>
+                                                            <th width="30%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="sub_task_data">
+                                                        
+                                                    </tbody>
 
-                                                <div class="col-md-12 sub_task_data">
+                                                </table>
+                                                
                                                     
                                                 </div>
+                                                <input type="hidden" name="file_title" id="subtasktitle" required>
                                                 <input type="hidden" name="subtask" id="subtaskinput">
+                                                <input type="hidden" name="type" id="subtasktype">
 
                                                 <!-- <div class="col-md-6 form-group">
                                                     <label>{{trans('file.Title')}} *</label>
@@ -287,23 +268,17 @@
                                                            placeholder="{{trans('file.Title')}}">
                                                 </div> -->
 
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{trans('file.Description')}}</label>
-                                                        <textarea required class="form-control" id="file_description"
-                                                                  name="file_description" rows="3"></textarea>
-                                                    </div>
-                                                </div>
+                                                
 
-                                                <div class="col-md-6 form-group">
+                                                <!-- <div class="col-md-6 form-group">
                                                     <label>{{trans('file.Attachments')}} </label>
                                                     <input type="file" name="file_attachment" id="file_attachment"
                                                            class="form-control">
-                                                </div>
+                                                </div> -->
 
                                                 
 
-                                                <div class="col-md-6 form-group">
+                                                <div class="col-md-12 form-group text-right">
                                                 <label>&nbsp;</label>
                                                     <br>
                                                     <input type="submit" name="file_submit" id="file_submit"
@@ -312,7 +287,7 @@
                                                 </div>
                                             </form>
                                         </div>
-
+                                            <br>
                                         <div class="table-responsive">
                                             <table id="files-table" class="table ">
                                                 <thead>
@@ -321,6 +296,43 @@
                                                     <th>Sub Task</th>
                                                     <th>{{trans('file.Description')}}</th>
                                                     <th>{{__('Date and Time')}}</th>
+                                                    <th class="not-exported">{{trans('file.action')}}</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="card-title"><h2>{{trans('file.Discussions')}}</h2></div>
+                                            <span id="discussions_result"></span>
+                                            <form method="post" id="discussions_form" class="form-horizontal">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <div class="form-group">
+                                                            <label>{{trans('file.Discussions')}}</label>
+                                                            <textarea required class="form-control" id="task_discussions"
+                                                                    name="task_discussions" rows="3"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 form-group">
+                                                        <br><br>
+                                                        <input type="submit" name="discussions_submit"
+                                                            id="discussions_submit"
+                                                            class="btn btn-success" value={{trans("file.Save")}}>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table id="discussions-table" class="table ">
+                                                <thead>
+                                                <tr>
+                                                    <th>{{trans('file.User')}}</th>
+                                                    <th>{{trans('file.Message')}}</th>
                                                     <th class="not-exported">{{trans('file.action')}}</th>
                                                 </tr>
                                                 </thead>
@@ -508,7 +520,7 @@
             })
         });
 
-        $('[data-table="discussion"]').one('click', function (e) {
+        $('[data-table="files"]').one('click', function (e) {
 
             $('#discussions-table').DataTable().clear().destroy();
 
@@ -637,9 +649,10 @@
             from: task_progress,
         });
 
+        sub_task();
 
         $('[data-table="files"]').one('click', function (e) {
-            sub_task();
+            
 
             $('#files-table').DataTable().clear().destroy();
 
@@ -721,20 +734,7 @@
                         "orderable": false,
                         'targets': [0, 2],
                     },
-                    {
-                        'render' : function (data, type, row, meta)
-                        {
-                            let arr = data.split(',');
-                            var sr =0;
-                            var a = "";
-                            $.each(arr, function(index, value){
-                                sr++;
-                                a +=sr+") "+ value+"<br>";
-                            })
-                            return a;
-                        },
-                        'targets': [1]
-                    },
+                    
                 ],
 
                 'select': {style: 'multi', selector: 'td:first-child'},
@@ -754,7 +754,11 @@
                 dataType: "json",
                 success: function(data)
                 {
-                    $.each(JSON.parse(data),function(index,val){
+                    var result = JSON.parse(data);
+
+                    //console.log(result);
+
+                    $.each(result,function(index,val){
                         if(category =='')
                         {
                             $("#s_subtask").append('<option>'+val.category+'</option>');
@@ -763,12 +767,34 @@
                         {
                             $('.sub_task_data').empty();
                             var sr = 0;
-                            $.each(val.subtask,function(a,b){
+
+                            $.each(val[0].subtask,function(a,b){
                                 sr++;
-                                $('.sub_task_data').append('<p>'+sr+"). "+b+'</p>');
+                                var data_list = '<tr><td>'+sr+"). "+b+'</td>';
+
+                                data_list += subtasklist(val[0].status[a])
+                                data_list += '</tr>';
+                                $('.sub_task_data').append(data_list);
                             });
                             
-                            $("#subtaskinput").val(val.subtask);
+                            function subtasklist($value)
+                            {
+                                if($value == 'Plan text')
+                                {
+                                    return '<td>&nbsp;</td>';
+                                }
+                                else if($value == 'File')
+                                {
+                                    return '<td><input type="file" name="file_attachment[]" id="file_attachment" class="form-control"></td>';
+                                }
+                                else if($value == 'Remarks')
+                                {
+                                    return '<td><input type="text" name="remarks[]" class="form-control"></td>';
+                                }
+                            }
+                            $("#subtasktitle").val(val.category);
+                            $("#subtaskinput").val(val[0].subtask);
+                            $("#subtasktype").val(val[0].status);
                         }
                         
 
