@@ -211,6 +211,21 @@
                             </div>
 
                             <div class="col-md-6 form-group">
+                                <label class="text-bold">State<span class="text-danger">*</span></label>
+                                <input type="text" name="state" id="state"
+                                       placeholder="{{__('State',['key'=>'state'])}}"
+                                       required class="form-control">
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label class="text-bold">City<span class="text-danger">*</span></label>
+                                <input type="text" name="city" id="city"
+                                       placeholder="{{__('City',['key'=>'city'])}}"
+                                       required class="form-control">
+                            </div>
+
+                            <!--
+                            <div class="col-md-6 form-group">
                                 <label class="text-bold"> State <span class="text-danger">*</span></label>
                                 <select name="state" id="state" required class="selectpicker form-control"
                                 data-live-search="true" data-live-search-style="contains"
@@ -225,6 +240,7 @@
                                         title="{{__('Selecting',['key'=>'City'])}}...">                                   
                                 </select>
                             </div>
+                            -->
                             
 
                             <div class="col-md-6 form-group">
@@ -333,6 +349,14 @@
     </div>
 
 @endsection
+
+<style>
+
+.dynamic, .bootstrap-select
+{
+    height: 40px;
+}
+</style>
 
 @push('scripts')
 <script type="text/javascript">

@@ -210,6 +210,21 @@
                             </div>
 
                             <div class="col-md-6 form-group">
+                                <label class="text-bold">State<span class="text-danger">*</span></label>
+                                <input type="text" name="state" id="state"
+                                       placeholder="<?php echo e(__('State',['key'=>'state'])); ?>"
+                                       required class="form-control">
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label class="text-bold">City<span class="text-danger">*</span></label>
+                                <input type="text" name="city" id="city"
+                                       placeholder="<?php echo e(__('City',['key'=>'city'])); ?>"
+                                       required class="form-control">
+                            </div>
+
+                            <!--
+                            <div class="col-md-6 form-group">
                                 <label class="text-bold"> State <span class="text-danger">*</span></label>
                                 <select name="state" id="state" required class="selectpicker form-control"
                                 data-live-search="true" data-live-search-style="contains"
@@ -224,6 +239,7 @@
                                         title="<?php echo e(__('Selecting',['key'=>'City'])); ?>...">                                   
                                 </select>
                             </div>
+                            -->
                             
 
                             <div class="col-md-6 form-group">
@@ -338,6 +354,14 @@ unset($__errorArgs, $__bag); ?>"
     </div>
 
 <?php $__env->stopSection(); ?>
+
+<style>
+
+.dynamic, .bootstrap-select
+{
+    height: 40px;
+}
+</style>
 
 <?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
@@ -849,5 +873,10 @@ $("#state").change(function (){
 })
 </script>
 <?php $__env->stopPush(); ?>
-
+<style>
+#employee-table
+{
+    width: 100% !important;
+}
+</style>
 <?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/employee/index.blade.php ENDPATH**/ ?>
