@@ -18,7 +18,7 @@
                                 <a class="dropdown-item" href="#" name="create_record" id="create_record">Add Admin</a>
                                 @endif
                                 <a class="dropdown-item" href="{{url('/staff/employees')}}#formModal">Add Employee</a>
-                                <a class="dropdown-item" href="{{url('/project-management/clients')}}#formModal">Add Client</a>
+                                <a class="dropdown-item" href="{{url('/project-management/clients')}}">Add Client</a>
                             </div>
                         </div>
                     @endcan
