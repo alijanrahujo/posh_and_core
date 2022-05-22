@@ -580,6 +580,5 @@
             })
         });
     })(jQuery);
-    location.reload();
 </script>
 @endpush
