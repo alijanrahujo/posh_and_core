@@ -1,5 +1,4 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <section>
 
@@ -8,27 +7,29 @@
         <div class="container-fluid mb-3">
             <div class="d-flex flex-row">
                 <div class="p-2">
-                    @can('store-user')
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-user')): ?>
                         <div class="dropdown">
                             <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-plus"></i> {{__('Add User')}}
+                                <i class="fa fa-plus"></i> <?php echo e(__('Add User')); ?>
+
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @if(auth()->user()->role_users_id == 1)
+                                <?php if(auth()->user()->role_users_id == 1): ?>
                                 <a class="dropdown-item" href="#" name="create_record" id="create_record">Add Admin</a>
-                                @endif
-                                <a class="dropdown-item" href="{{url('/staff/employees')}}#formModal">Add Employee</a>
-                                <a class="dropdown-item" href="{{url('/project-management/clients')}}#formModal">Add Client</a>
+                                <?php endif; ?>
+                                <a class="dropdown-item" href="<?php echo e(url('/staff/employees')); ?>#formModal">Add Employee</a>
+                                <a class="dropdown-item" href="<?php echo e(url('/project-management/clients')); ?>#formModal">Add Client</a>
                             </div>
                         </div>
-                    @endcan
+                    <?php endif; ?>
                 </div>
                 <div class="p-2">
-                    @can('delete-user')
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete-user')): ?>
                         <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i
-                                    class="fa fa-minus-circle"></i> {{__('Bulk delete')}}
+                                    class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?>
+
                         </button>
-                    @endcan
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -38,11 +39,11 @@
                 <thead>
                     <tr>
                         <th class="not-exported"></th>
-                        <th>{{__('User')}}</th>
-                        <th>{{trans('file.Contact')}}</th>
-                        <th>{{__('Login Info')}}</th>
-                        <th>{{trans('file.status')}}</th>
-                        <th class="not-exported">{{trans('file.action')}}</th>
+                        <th><?php echo e(__('User')); ?></th>
+                        <th><?php echo e(trans('file.Contact')); ?></th>
+                        <th><?php echo e(__('Login Info')); ?></th>
+                        <th><?php echo e(trans('file.status')); ?></th>
+                        <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                     </tr>
                 </thead>
             </table>
@@ -53,7 +54,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 id="exampleModalLabel" class="modal-title">{{__('Add User')}}</h5>
+                        <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Add User')); ?></h5>
                         <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
                     </div>
 
@@ -61,61 +62,75 @@
                         <span id="form_result"></span>
                         <form method="post" id="sample_form" class="form-horizontal" enctype="multipart/form-data">
 
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{__('First Name')}} <span class="text-danger">*</span></label>
-                                    <input type="text" name="first_name" id="first_name" placeholder="{{__('First Name')}}"
+                                    <label><?php echo e(__('First Name')); ?> <span class="text-danger">*</span></label>
+                                    <input type="text" name="first_name" id="first_name" placeholder="<?php echo e(__('First Name')); ?>"
                                            required class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>{{__('Last Name')}} <span class="text-danger">*</span></label>
-                                    <input type="text" name="last_name" id="last_name" placeholder="{{__('Last Name')}}"
+                                    <label><?php echo e(__('Last Name')); ?> <span class="text-danger">*</span></label>
+                                    <input type="text" name="last_name" id="last_name" placeholder="<?php echo e(__('Last Name')); ?>"
                                            required class="form-control">
                                 </div>
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Username')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Username')); ?> <span class="text-danger">*</span></label>
                                     <input type="text" name="username" id="username"
-                                           placeholder="{{__('Unique Value',['key'=>trans('file.Name')])}}"
-                                           required class="form-control" value="{{ old('username') }}">
+                                           placeholder="<?php echo e(__('Unique Value',['key'=>trans('file.Name')])); ?>"
+                                           required class="form-control" value="<?php echo e(old('username')); ?>">
                                 </div>
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Email')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Email')); ?> <span class="text-danger">*</span></label>
                                     <input type="email" name="email" id="email" placeholder="example@example.com" required
-                                           class="form-control" value="{{ old('email') }}">
+                                           class="form-control" value="<?php echo e(old('email')); ?>">
 
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Phone')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Phone')); ?> <span class="text-danger">*</span></label>
                                     <input type="text" name="contact_no" id="contact_no"
-                                           placeholder="{{trans('file.Phone')}}" required
-                                           class="form-control" value="{{ old('contact_no') }}">
+                                           placeholder="<?php echo e(trans('file.Phone')); ?>" required
+                                           class="form-control" value="<?php echo e(old('contact_no')); ?>">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Password')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Password')); ?> <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="password" name="password" id="password"
-                                               placeholder="{{__('min:4 characters')}}"
+                                               placeholder="<?php echo e(__('min:4 characters')); ?>"
                                                required class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>{{__('Confirm Password')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(__('Confirm Password')); ?> <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input id="confirm_pass" type="password"
-                                               class="form-control @error('password') is-invalid @enderror"
-                                               name="password_confirmation" placeholder="{{__('Re-type Password')}}"
+                                               class="form-control <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                               name="password_confirmation" placeholder="<?php echo e(__('Re-type Password')); ?>"
                                                required autocomplete="new-password">
                                     </div>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="profile_photo" class=""><strong>{{ __('Image') }}</strong></label>
+                                    <label for="profile_photo" class=""><strong><?php echo e(__('Image')); ?></strong></label>
                                     <input type="file" id="profile_photo"
-                                           class="form-control @error('photo') is-invalid @enderror"
-                                           name="profile_photo" placeholder="{{__('Upload',['key'=>trans('file.Photo')])}}">
+                                           class="form-control <?php $__errorArgs = ['photo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                           name="profile_photo" placeholder="<?php echo e(__('Upload',['key'=>trans('file.Photo')])); ?>">
                                 </div>
                                 <div class="col-md-6 form-group" align="center">
                                     <br>
@@ -125,13 +140,13 @@
                                                    id="is_active_add"
                                                    value="1" checked>
                                             <label class="custom-control-label"
-                                                   for="is_active_add">{{trans('file.Active')}}</label>
+                                                   for="is_active_add"><?php echo e(trans('file.Active')); ?></label>
                                         </div>
                                         <div class="col-md-9">
                                             <input type="hidden" name="action" id="action"/>
                                             <input type="hidden" name="hidden_id" id="hidden_id"/>
                                             <button type="submit" name="action_button" id="action_button"
-                                                    class="btn btn-primary btn-block">{{__('Add User')}}</button>
+                                                    class="btn btn-primary btn-block"><?php echo e(__('Add User')); ?></button>
                                         </div>
                                     </div>
 
@@ -151,7 +166,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Edit')}}</h5>
+                        <h5 id="exampleModalLabel" class="modal-title"><?php echo e(trans('file.Edit')); ?></h5>
                         <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
                     </div>
 
@@ -160,81 +175,94 @@
                         <span id="store_profile_photo"></span>
                         <form method="post" id="form_edit" class="form-horizontal" enctype="multipart/form-data">
 
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{__('First Name')}} *</label>
-                                    <input type="text" name="first_name" id="first_name_edit" placeholder="{{__('First Name')}}"
+                                    <label><?php echo e(__('First Name')); ?> *</label>
+                                    <input type="text" name="first_name" id="first_name_edit" placeholder="<?php echo e(__('First Name')); ?>"
                                            required class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>{{__('Last Name')}} *</label>
-                                    <input type="text" name="last_name" id="last_name_edit" placeholder="{{__('Last Name')}}"
+                                    <label><?php echo e(__('Last Name')); ?> *</label>
+                                    <input type="text" name="last_name" id="last_name_edit" placeholder="<?php echo e(__('Last Name')); ?>"
                                            required class="form-control">
                                 </div>
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Username')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Username')); ?> <span class="text-danger">*</span></label>
                                     <input type="text" name="username" id="username_edit"
-                                           placeholder="{{__('Unique Value',['key'=>trans('file.Name')])}}"
+                                           placeholder="<?php echo e(__('Unique Value',['key'=>trans('file.Name')])); ?>"
                                            required class="form-control">
                                 </div>
 
 
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Email')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Email')); ?> <span class="text-danger">*</span></label>
                                     <input type="email" name="email" id="email_edit" placeholder="example@example.com"
                                            required class="form-control">
                                 </div>
 
 
                                 <div class="col-md-6 form-group">
-                                    <label>{{trans('file.Phone')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Phone')); ?> <span class="text-danger">*</span></label>
                                     <input type="text" name="contact_no" id="contact_no_edit"
-                                           placeholder="{{trans('file.Phone')}}" required
-                                           class="form-control" value="{{ old('contact_no') }}">
+                                           placeholder="<?php echo e(trans('file.Phone')); ?>" required
+                                           class="form-control" value="<?php echo e(old('contact_no')); ?>">
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>{{trans('file.Password')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(trans('file.Password')); ?> <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" name="password" id="password_edit"
-                                               placeholder="{{__('min:4 characters')}}">
+                                               placeholder="<?php echo e(__('min:4 characters')); ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>{{__('Confirm Password')}} <span class="text-danger">*</span></label>
+                                    <label><?php echo e(__('Confirm Password')); ?> <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input id="confirm_pass_edit" type="password"
-                                               class="form-control @error('password') is-invalid @enderror"
-                                               name="password_confirmation" placeholder="{{__('Re-type Password')}}">
+                                               class="form-control <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                               name="password_confirmation" placeholder="<?php echo e(__('Re-type Password')); ?>">
 
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 form-group">
-                                    <label class="text-bold">{{trans('file.Role')}} <span class="text-danger">*</span></label>
+                                    <label class="text-bold"><?php echo e(trans('file.Role')); ?> <span class="text-danger">*</span></label>
                                     <select name="role_users_id" id="role_users_id" required
                                             class="selectpicker form-control"
                                             data-live-search="true" data-live-search-style="contains"
-                                            title="{{__('Selecting',['key'=>trans('file.Role')])}}...">
-                                        @foreach ($roles as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                        {{-- <option value="1">Admin</option>
-                                        <option value="2">Employee</option> --}}
+                                            title="<?php echo e(__('Selecting',['key'=>trans('file.Role')])); ?>...">
+                                        <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($item->id); ?>"><?php echo e($item->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        
                                     </select>
                                 </div>
 
 
                                 <div class="col-md-6 form-group ">
-                                    <label for="profile_photo_edit" class=""><strong>{{ __('Image') }}</strong></label>
+                                    <label for="profile_photo_edit" class=""><strong><?php echo e(__('Image')); ?></strong></label>
                                     <input type="file" id="profile_photo_edit"
-                                           class="form-control @error('photo') is-invalid @enderror" name="profile_photo"
-                                           placeholder="{{__('Upload',['key'=>trans('file.Photo')])}}">
+                                           class="form-control <?php $__errorArgs = ['photo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="profile_photo"
+                                           placeholder="<?php echo e(__('Upload',['key'=>trans('file.Photo')])); ?>">
                                     <span id="store_profile_photo"></span>
                                 </div>
 
@@ -245,14 +273,14 @@
                                             <input type="checkbox" class="custom-control-input" name="is_active"
                                                    id="is_active_edit" value="1" checked>
                                             <label class="custom-control-label"
-                                                   for="is_active_edit">{{trans('file.Active')}}</label>
+                                                   for="is_active_edit"><?php echo e(trans('file.Active')); ?></label>
                                         </div>
                                 </div>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="action" id="action_edit"/>
                                             <input type="hidden" name="hidden_id" id="hidden_id_edit"/>
                                             <input type="submit" name="action_button" id="action_button_edit"
-                                                   class="btn btn-primary btn-block" value="{{trans('file.Edit')}}"/>
+                                                   class="btn btn-primary btn-block" value="<?php echo e(trans('file.Edit')); ?>"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -270,16 +298,16 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title">{{trans('file.Confirmation')}}</h2>
+                        <h2 class="modal-title"><?php echo e(trans('file.Confirmation')); ?></h2>
                     </div>
                     <div class="modal-body">
-                        <h4 align="center">{{__('Are you sure you want to remove this data?')}}</h4>
+                        <h4 align="center"><?php echo e(__('Are you sure you want to remove this data?')); ?></h4>
                     </div>
                     <div class="modal-footer">
                         <button type="button" name="ok_button" id="ok_button"
-                                class="btn btn-danger">{{trans('file.OK')}}</button>
+                                class="btn btn-danger"><?php echo e(trans('file.OK')); ?></button>
                         <button type="button" class="btn btn-default"
-                                data-dismiss="modal">{{trans('file.Cancel')}}</button>
+                                data-dismiss="modal"><?php echo e(trans('file.Cancel')); ?></button>
                     </div>
                 </div>
             </div>
@@ -289,10 +317,10 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
 
     (function($) {
@@ -329,7 +357,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('users-list') }}",
+                    url: "<?php echo e(route('users-list')); ?>",
                 },
 
                 columns: [
@@ -356,9 +384,9 @@
                         name: 'is_active',
                         render: function (data) {
                             if (data == '1') {
-                                return "<td><div class = 'badge badge-success'>{{trans('file.Active')}}</div>"
+                                return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Active')); ?></div>"
                             } else {
-                                return "<td><div class = 'badge badge-danger'>{{trans('file.Inactive')}}</div>"
+                                return "<td><div class = 'badge badge-danger'><?php echo e(trans('file.Inactive')); ?></div>"
                             }
                         }
                     },
@@ -371,12 +399,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ {{__('records per page')}}',
-                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                    "search": '{{trans("file.Search")}}',
+                    'lengthMenu': '_MENU_ <?php echo e(__('records per page')); ?>',
+                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                    "search": '<?php echo e(trans("file.Search")); ?>',
                     'paginate': {
-                        'previous': '{{trans("file.Previous")}}',
-                        'next': '{{trans("file.Next")}}'
+                        'previous': '<?php echo e(trans("file.Previous")); ?>',
+                        'next': '<?php echo e(trans("file.Next")); ?>'
                     }
                 },
                 'columnDefs': [
@@ -440,9 +468,9 @@
         });
 
         $('#create_record').on('click', function () {
-            $('.modal-title').text('{{__('Add User')}}');
-            $('#action_button').val('{{trans('file.Add')}}');
-            $('#action').val('{{trans('file.Add')}}');
+            $('.modal-title').text('<?php echo e(__('Add User')); ?>');
+            $('#action_button').val('<?php echo e(trans('file.Add')); ?>');
+            $('#action').val('<?php echo e(trans('file.Add')); ?>');
             $('select').selectpicker('refresh');
             $('#store_profile_photo').html('');
             $('#formModal').modal('show');
@@ -452,7 +480,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "{{ route('add-user') }}",
+                url: "<?php echo e(route('add-user')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -483,7 +511,7 @@
         $('#form_edit').on('submit', function (event) {
             event.preventDefault();
             $.ajax({
-                url: "{{ route('update-user') }}",
+                url: "<?php echo e(route('update-user')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -520,7 +548,7 @@
             let id = $(this).attr('id');
             $('#form_result_edit').html('');
 
-            let target = "{{ url('/user/edit')}}/" + id;
+            let target = "<?php echo e(url('/user/edit')); ?>/" + id;
 
             $.ajax({
                 url: target,
@@ -544,16 +572,16 @@
 
 
                     if (html.data.profile_photo == null) {
-                        $('#store_profile_photo').html("<img src={{ URL::to('/public') }}/logo/avatar.jpg" + " width='100'  class='rounded-circle' />");
+                        $('#store_profile_photo').html("<img src=<?php echo e(URL::to('/public')); ?>/logo/avatar.jpg" + " width='100'  class='rounded-circle' />");
                         $('#store_profile_photo').append("<input type='hidden' name='hidden_image' value='" + html.data.profile_photo + "'  />");
                     } else {
-                        $('#store_profile_photo').html("<img src={{ URL::to('/public') }}/uploads/profile_photos/" + html.data.profile_photo + " width='100'  class='rounded-circle' />");
+                        $('#store_profile_photo').html("<img src=<?php echo e(URL::to('/public')); ?>/uploads/profile_photos/" + html.data.profile_photo + " width='100'  class='rounded-circle' />");
                         $('#store_profile_photo').append("<input type='hidden' name='hidden_image' value='" + html.data.profile_photo + "'  />");
                     }
 
                     $('#hidden_id_edit').val(html.data.id);
-                    $('#action_button_edit').val('{{trans('file.Edit')}}');
-                    $('#action_edit').val('{{trans('file.Edit')}}');
+                    $('#action_button_edit').val('<?php echo e(trans('file.Edit')); ?>');
+                    $('#action_edit').val('<?php echo e(trans('file.Edit')); ?>');
                     $('#editModal').modal('show');
                 }
             })
@@ -564,8 +592,8 @@
         $(document).on('click', '.delete', function () {
             lid = $(this).attr('id');
             $('#confirmModal').modal('show');
-            $('.modal-title').text('{{__('DELETE Record')}}');
-            $('#ok_button').text('{{trans('file.OK')}}');
+            $('.modal-title').text('<?php echo e(__('DELETE Record')); ?>');
+            $('#ok_button').text('<?php echo e(trans('file.OK')); ?>');
         });
 
         $(document).on('click', '#bulk_delete', function () {
@@ -573,9 +601,9 @@
             let id = [];
             id = table.rows({selected: true}).ids().toArray();
             if (id.length > 0) {
-                if (confirm('{{__('Delete Selection',['key'=>trans('file.User')])}}')) {
+                if (confirm('<?php echo e(__('Delete Selection',['key'=>trans('file.User')])); ?>')) {
                     $.ajax({
-                        url: '{{route('delete_by_selection')}}',
+                        url: '<?php echo e(route('delete_by_selection')); ?>',
                         method: 'POST',
                         data: {
                             userIdArray: id
@@ -600,7 +628,7 @@
                     });
                 }
             } else {
-                alert('{{__('Please select atleast one checkbox')}}');
+                alert('<?php echo e(__('Please select atleast one checkbox')); ?>');
             }
 
         });
@@ -613,11 +641,11 @@
         });
 
         $('#ok_button').on('click', function () {
-            let target = "{{ url('/user/delete')}}/" + lid;
+            let target = "<?php echo e(url('/user/delete')); ?>/" + lid;
             $.ajax({
                 url: target,
                 beforeSend: function () {
-                    $('#ok_button').text('{{trans('file.Deleting...')}}');
+                    $('#ok_button').text('<?php echo e(trans('file.Deleting...')); ?>');
                 },
                 success: function (data) {
                     let html;
@@ -640,9 +668,9 @@
         $('#confirm_pass').on('input', function () {
 
             if ($('input[name="password"]').val() != $('input[name="password_confirmation"]').val())
-                $("#divCheckPasswordMatch").html('{{__('Password does not match! please type again')}}');
+                $("#divCheckPasswordMatch").html('<?php echo e(__('Password does not match! please type again')); ?>');
             else
-                $("#divCheckPasswordMatch").html('{{__('Password matches!')}}');
+                $("#divCheckPasswordMatch").html('<?php echo e(__('Password matches!')); ?>');
 
         });
 
@@ -654,4 +682,6 @@
     })(jQuery);
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/all_user/index.blade.php ENDPATH**/ ?>

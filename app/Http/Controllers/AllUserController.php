@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
-
+use Illuminate\Support\Facades\DB;
 
 class AllUserController extends Controller {
 
@@ -16,8 +16,11 @@ class AllUserController extends Controller {
 
         $logged_user = auth()->user();
 
+
+
         //$users = User::with('RoleUser')->orderByDesc('is_active');
         $users = User::orderBy('is_active','desc')->get();
+		$roles = DB::table('roles')->get();
 
         	if ($logged_user->can('view-user')){
                 if (request()->ajax()){
@@ -91,7 +94,7 @@ class AllUserController extends Controller {
                         ->make(true);
 
                 }
-                return view('all_user.index');
+                return view('all_user.index',compact('roles'));
             }
             return abort('403', __('You are not authorized'));
     }
@@ -148,6 +151,7 @@ class AllUserController extends Controller {
 			$data['contact_no'] = $request->contact_no;
 			$data['email']      = strtolower(trim($request->email));
 			$data['is_active']  = $request->is_active;
+			$data['role_users_id'] = $request->role_users_id;
 
 
 
@@ -177,7 +181,7 @@ class AllUserController extends Controller {
 			}
 
 			User::whereId($id)->update($data);
-			Employee::whereId($id)->update(['email' => $data['email'], 'contact_no' => $data['contact_no'], 'is_active' => $data['is_active']]);
+			Employee::whereId($id)->update(['first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'email' => $data['email'], 'contact_no' => $data['contact_no'], 'is_active' => $data['is_active']]);
 
 
 			return response()->json(['success' => __('Data is successfully updated')]);
