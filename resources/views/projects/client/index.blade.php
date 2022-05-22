@@ -222,6 +222,7 @@
 
 @push('scripts')
 <script type="text/javascript">
+    
     (function($) {
         "use strict";
 
@@ -579,6 +580,6 @@
             })
         });
     })(jQuery);
-
+    location.reload();
 </script>
 @endpush
