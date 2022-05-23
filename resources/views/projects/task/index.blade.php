@@ -659,7 +659,7 @@
                     }
 
                     let assign = [];
-                    
+                    console.log(html.data);
                     if (typeof JSON.parse(html.data.subtask) !== 'undefined') {
 
                     $.each(JSON.parse(html.data.subtask), function(index, value){
