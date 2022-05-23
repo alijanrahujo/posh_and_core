@@ -660,7 +660,7 @@
 
                     let assign = [];
                     
-                    if (typeof html.data.subtask !== 'undefined') {
+                    if (typeof JSON.parse(html.data.subtask) !== 'undefined') {
 
                     $.each(JSON.parse(html.data.subtask), function(index, value){
                         assign.push(value.id);
