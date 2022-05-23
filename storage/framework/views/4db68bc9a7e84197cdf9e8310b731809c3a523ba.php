@@ -217,13 +217,15 @@
 
                             <div class="col-md-6 form-group">
                                 <label><?php echo e(__('Subtask')); ?> *</label>
-                                <select name="subtask_id[]" id="subtask_id" class="form-control pre-assigned"
-                                        multiple="multiple">
+                                <select name="subtask_id[]" id="edit_subtask_id" class="form-control selectpicker "
+                                        data-live-search="true" data-live-search-style="contains"
+                                        title="<?php echo e(__('Selecting',['key'=>'Select Subtask'])); ?>..." multiple="multiple">
                                     <?php $__currentLoopData = $subtasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subtask): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($subtask->id); ?>"><?php echo e($subtask->subtask); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
+
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -657,17 +659,24 @@
 
                     let assign = [];
                     
+                    if (typeof html.data.subtask !== 'undefined') {
+
                     $.each(JSON.parse(html.data.subtask), function(index, value){
                         assign.push(value.id);
                     });
+
+                    }
                     
                     $('#subtask_id').select2({
                         placeholder: 'Assign Subtask',
                     });
-                    $('#subtask_id').val(assign);
-                    $('#subtask_id').trigger('change');
 
 
+                    //$('#subtask_id').val(assign);
+                    //$('#subtask_id').trigger('change');
+
+                    
+                    $('#edit_subtask_id').selectpicker('val', assign);
 
                     $('#hidden_id').val(html.data.id);
                     $('#editModal').modal('show');
