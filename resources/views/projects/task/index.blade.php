@@ -660,13 +660,13 @@
 
                     let assign = [];
                     console.log(html.data);
-                    if (typeof JSON.parse(html.data.subtask) !== 'undefined') {
-
-                    $.each(JSON.parse(html.data.subtask), function(index, value){
-                        assign.push(value.id);
-                    });
-
+                    if (html.data.subtask !='') 
+                    {
+                        $.each(JSON.parse(html.data.subtask), function(index, value){
+                            assign.push(value.id);
+                        });
                     }
+                    
                     
                     $('#subtask_id').select2({
                         placeholder: 'Assign Subtask',
