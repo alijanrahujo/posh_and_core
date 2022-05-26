@@ -220,7 +220,7 @@
                                 <label>{{__('Subtask')}} *</label>
                                 <select name="subtask_id[]" id="edit_subtask_id" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title="{{__('Selecting',['key'=>'Select Subtask'])}}..." multiple="multiple">
+                                        title="{{__('Selecting',['key'=>'Subtask'])}}..." multiple="multiple">
                                     @foreach($subtasks as $subtask)
                                         <option value="{{$subtask->id}}">{{$subtask->subtask}}</option>
                                     @endforeach

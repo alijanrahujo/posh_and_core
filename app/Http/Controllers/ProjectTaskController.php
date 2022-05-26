@@ -6,6 +6,7 @@ use App\Project;
 use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Subtask;
 
 class ProjectTaskController extends Controller {
 
@@ -48,7 +49,6 @@ class ProjectTaskController extends Controller {
 	{
 		$logged_user = auth()->user();
 
-
 		if ($logged_user->can('store-project'))
 		{
 			$validator = Validator::make($request->only('task_title', 'estimated_hour', 'description', 'start_date'
@@ -80,6 +80,16 @@ class ProjectTaskController extends Controller {
 			$data ['description'] = $request->task_description;
 			$data ['task_hour'] = $request->estimated_hour;
 
+			if(count($request->subtask_id) >0)
+			{
+				$subtask_data = [];
+				foreach($request->subtask_id as $subtask)
+				{
+					$subtaskdb = Subtask::select('id','subtask','meta')->where('id',$subtask)->first();
+					$subtask_data[] = ['category'=>$subtaskdb->subtask,json_decode($subtaskdb->meta),'id'=>$subtaskdb->id];
+				}
+				$data['subtask'] = json_encode($subtask_data);
+			}
 
 			Task::create($data);
 

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
+use App\Subtask;
 
 class ProjectController extends Controller {
 
@@ -157,6 +158,8 @@ class ProjectController extends Controller {
 	 */
 	public function show(Project $project)
 	{
+
+		$subtasks = Subtask::latest()->get();
 		try
 		{
 			$name = DB::table('employee_project')->where('project_id', $project->id)->pluck('employee_id')->toArray();
@@ -176,7 +179,7 @@ class ProjectController extends Controller {
 				->select('employees.id', DB::raw("CONCAT(employees.first_name,' ',employees.last_name) as full_name"))
 				->get();
 
-			return view('projects.project.details', compact('project', 'employees', 'company_name', 'name'));
+			return view('projects.project.details', compact('project', 'employees', 'company_name', 'name','subtasks'));
 		}
 
 		return response()->json(['success' => __('You are not authorized')]);
