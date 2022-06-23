@@ -8,10 +8,10 @@
 
 
         <div class="container-fluid">
-
+            @can('store-project')
             <button type="button" class="btn btn-info mb-4" name="create_record" id="create_record"><i
                         class="fa fa-plus"></i> {{__('Add Project')}}</button>
-
+            @endcan
 
         </div>
 
@@ -132,7 +132,12 @@
             </div>
         </div>
     </div>
-
+<style>
+#client_project-table
+{
+    width:100% !important;
+}
+</style>
 
 
     <script type="text/javascript">

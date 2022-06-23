@@ -488,6 +488,13 @@
 
 @endsection
 
+<style>
+#tasks-table, #discussions-table, #bugs-table, #files-table
+{
+    width:100% !important;
+}
+</style>
+
 @push('scripts')
 <script type="text/javascript">
     (function($) {

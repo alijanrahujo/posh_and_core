@@ -1,5 +1,4 @@
-@extends('layout.client')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
     <section>
@@ -8,22 +7,24 @@
 
 
         <div class="container-fluid">
-                <button type="button" class="btn btn-info" name="create_record" id="create_record"><i
-                            class="fa fa-plus"></i> {{__('Add Task')}}</button>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-project')): ?>
+            <button type="button" class="btn btn-info mb-4" name="create_record" id="create_record"><i
+                        class="fa fa-plus"></i> <?php echo e(__('Add Project')); ?></button>
+            <?php endif; ?>
+
         </div>
 
         <div class="table-responsive">
-            <table id="client_task-table" class="table ">
+            <table id="client_project-table" class="table">
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Title')}}</th>
-                    <th>{{__('Start Date')}}</th>
-                    <th>{{__('End Date')}}</th>
-                    <th>{{trans('file.Status')}}</th>
-                    <th>{{__('Assigned Employees')}}</th>
-                    <th>{{__('Task Progress')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
+                    <th><?php echo e(__('Project Summary')); ?></th>
+                    <th><?php echo e(trans('file.Priority')); ?></th>
+                    <th><?php echo e(__('Assigned Employees')); ?></th>
+                    <th><?php echo e(__('Start Date')); ?></th>
+                    <th><?php echo e(__('End Date')); ?></th>
+                    <th><?php echo e(__('Project Progress')); ?></th>
                 </tr>
                 </thead>
 
@@ -38,7 +39,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title">{{__('Add Task')}}</h5>
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(__('Add Project')); ?></h5>
                     <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
                 </div>
 
@@ -46,26 +47,26 @@
                     <span id="form_result"></span>
                     <form method="post" id="sample_form" class="form-horizontal">
 
-                        @csrf
+                        <?php echo csrf_field(); ?>
 
                         <div class="row">
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Title')}} *</label>
-                                <input type="text" name="task_name" id="task_name" required class="form-control"
-                                       placeholder="{{trans('file.Title')}}">
+                                <label><?php echo e(trans('file.Title')); ?> *</label>
+                                <input type="text" name="title" id="title" required class="form-control"
+                                       placeholder="<?php echo e(trans('file.Title')); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group hide-edit">
-                                    <label>{{trans('file.Company')}}</label>
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Company')); ?></label>
                                     <select name="company_id" id="company_id" class="form-control selectpicker dynamic"
                                             data-live-search="true" data-live-search-style="contains"
                                             data-first_name="first_name" data-last_name="last_name"
-                                            title='{{__('Selecting',['key'=>trans('file.Company')])}}...'>
-                                        @foreach($companies as $company)
-                                            <option value="{{$company->id}}">{{$company->company_name}}</option>
-                                        @endforeach
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Company')])); ?>...'>
+                                        <?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($company->id); ?>"><?php echo e($company->company_name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                     </select>
                                 </div>
@@ -73,42 +74,44 @@
 
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('Start Date')}} *</label>
+                                <label><?php echo e(__('Start Date')); ?> *</label>
                                 <input type="text" name="start_date" id="start_date" autocomplete="off" required
                                        class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{__('End Date')}} *</label>
+                                <label><?php echo e(__('End Date')); ?> *</label>
                                 <input type="text" name="end_date" id="end_date" autocomplete="off" required
                                        class="form-control date"
                                        value="">
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Project')}}</label>
-                                <select name="project_id" id="project_id" class="form-control selectpicker "
+                                <label><?php echo e(trans('file.Priority')); ?></label>
+                                <select name="project_priority" id="project_priority" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Project')])}}...'>
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Priority')])); ?>...'>
+                                    <option value="low"><?php echo e(trans('file.Low')); ?></option>
+                                    <option value="medium"><?php echo e(trans('file.Medium')); ?></option>
+                                    <option value="high"><?php echo e(trans('file.High')); ?></option>
+                                    <option value="highest"><?php echo e(trans('file.Highest')); ?></option>
                                 </select>
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label>{{__('Estimated Hour')}} *</label>
-                                <input type="text" name="task_hour" id="task_hour" required class="form-control"
-                                       placeholder="{{__('Estimated Hour')}}">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><?php echo e(trans('file.Summary')); ?></label>
+                                    <textarea class="form-control" id="summary"
+                                              name="summary" rows="3"></textarea>
+                                </div>
                             </div>
-
 
 
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>{{trans('file.Description')}}</label>
+                                    <label><?php echo e(trans('file.Description')); ?></label>
                                     <textarea class="form-control des-editor" id="description" name="description"
                                               rows="3"></textarea>
                                 </div>
@@ -118,169 +121,46 @@
                             <div class="container">
                                 <div class="form-group" align="center">
                                     <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                           value={{trans('file.Add')}}>
+                                           value=<?php echo e(trans('file.Add')); ?>>
                                 </div>
                             </div>
                         </div>
                     </form>
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="editModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 id="exampleModalLabel" class="modal-title">{{__('Edit Task')}}</h5>
-                    <button type="button" data-dismiss="modal" id="close" aria-label="Close" class="close"><i class="dripicons-cross"></i></button>
-                </div>
-
-                <div class="modal-body">
-                    <span id="edit_form_result"></span>
-                    <form method="post" id="edit_sample_form" class="form-horizontal">
-
-                        @csrf
-
-                        <div class="row">
-
-                            <div class="col-md-6 form-group">
-                                <label>{{trans('file.Title')}} *</label>
-                                <input type="text" name="edit_task_name" id="edit_task_name" required
-                                       class="form-control"
-                                       placeholder="{{trans('file.Title')}}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group hide-edit">
-                                    <label>{{trans('file.Company')}}</label>
-                                    <select name="edit_company_id" id="edit_company_id" class="form-control selectpicker dynamic"
-                                            data-live-search="true" data-live-search-style="contains"
-                                            data-first_name="first_name" data-last_name="last_name"
-                                            title='{{__('Selecting',['key'=>trans('file.Company')])}}...'>
-                                        @foreach($companies as $company)
-                                            <option value="{{$company->id}}">{{$company->company_name}}</option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-6 form-group">
-                                <label>{{__('Start Date')}} *</label>
-                                <input type="text" name="edit_start_date" id="edit_start_date" autocomplete="off"
-                                       required class="form-control date"
-                                       value="">
-                            </div>
-
-                            <div class="col-md-6 form-group">
-                                <label>{{__('End Date')}} *</label>
-                                <input type="text" name="edit_end_date" id="edit_end_date" autocomplete="off" required
-                                       class="form-control date"
-                                       value="">
-                            </div>
-
-                            <div class="col-md-6 form-group">
-                                <label>{{trans('file.Project')}}</label>
-                                <select name="edit_project_id" id="edit_project_id" class="form-control selectpicker "
-                                        data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Project')])}}...'>
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 form-group">
-                                <label>{{__('Estimated Hour')}} *</label>
-                                <input type="text" name="edit_task_hour" id="edit_task_hour" required
-                                       class="form-control"
-                                       placeholder="{{__('Estimated Hour')}}">
-                            </div>
-
-
-
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>{{trans('file.Description')}}</label>
-                                    <textarea class="form-control des-editor" id="edit_description"
-                                              name="edit_description"
-                                              rows="3"></textarea>
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="container">
-                                <div class="form-group" align="center">
-                                    <input type="hidden" name="hidden_id" id="hidden_id"/>
-                                    <input type="submit" name="edit_action_button" id="edit_action_button"
-                                           class="btn btn-warning"
-                                           value={{trans("file.Edit")}}>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="confirmModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">{{trans('file.Confirmation')}}</h2>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <h4 align="center">{{__('Are you sure you want to remove this data?')}}</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">{{trans('file.OK')}}'
-                    </button>
-                    <button type="button" class="close btn-default"
-                            data-dismiss="modal">{{trans('file.Cancel')}}</button>
                 </div>
             </div>
         </div>
     </div>
 <style>
-#client_task-table
+#client_project-table
 {
     width:100% !important;
 }
 </style>
+
+
     <script type="text/javascript">
         (function($) {  
         
             "use strict";
-
             $(document).ready(function () {
 
                 let date = $('.date');
                 date.datepicker({
-                    format: '{{ env('Date_Format_JS')}}',
+                    format: '<?php echo e(env('Date_Format_JS')); ?>',
                     autoclose: true,
                     todayHighlight: true
                 });
 
 
-                let table_table = $('#client_task-table').DataTable({
+                let table_table = $('#client_project-table').DataTable({
                     initComplete: function () {
                         this.api().columns([1]).every(function () {
                             let column = this;
                             let select = $('<select><option value=""></option></select>')
                                 .appendTo($(column.footer()).empty())
                                 .on('change', function () {
-                                    let val = $.fn.dataTable.util.escapeRegex(
+                                    var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
 
@@ -303,7 +183,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('clientTask') }}",
+                        url: "<?php echo e(route('clientProject')); ?>",
                     },
 
                     columns: [
@@ -313,22 +193,13 @@
                             searchable: false
                         },
                         {
-                            data: 'task_name',
-                            name: 'task_name',
-                        },
+                            data: 'summary',
+                            name: 'summary'
 
-                        {
-                            data: 'start_date',
-                            name: 'start_date',
-                        },
-
-                        {
-                            data: 'end_date',
-                            name: 'end_date',
                         },
                         {
-                            data: 'task_status',
-                            name: 'task_status',
+                            data: 'project_priority',
+                            name: 'project_priority',
                         },
                         {
                             data: 'assigned_employee',
@@ -338,8 +209,16 @@
                             }
                         },
                         {
-                            data: 'task_progress',
-                            name: 'task_progress',
+                            data: 'start_date',
+                            name: 'start_date',
+                        },
+                        {
+                            data: 'end_date',
+                            name: 'end_date',
+                        },
+                        {
+                            data: 'project_progress',
+                            name: 'project_progress',
                             render: function (data) {
                                 if (data !== null) {
                                     if(data > 70) {
@@ -354,30 +233,23 @@
                                 }
                             }
                         },
-
-
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false
-                        }
                     ],
 
 
                     "order": [],
                     'language': {
-                        'lengthMenu': '_MENU_ {{__("records per page")}}',
-                        "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                        "search": '{{trans("file.Search")}}',
+                        'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                        "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                        "search": '<?php echo e(trans("file.Search")); ?>',
                         'paginate': {
-                            'previous': '{{trans("file.Previous")}}',
-                            'next': '{{trans("file.Next")}}'
+                            'previous': '<?php echo e(trans("file.Previous")); ?>',
+                            'next': '<?php echo e(trans("file.Next")); ?>'
                         }
                     },
                     'columnDefs': [
                         {
                             "orderable": false,
-                            'targets': [0, 6],
+                            'targets': [0],
                         },
                         {
                             'render': function (data, type, row, meta) {
@@ -454,7 +326,7 @@
                 file_picker_types: 'image',
                 /* and here's our custom image picker*/
                 file_picker_callback: function (cb, value, meta) {
-                    let input = document.createElement('input');
+                    var input = document.createElement('input');
                     input.setAttribute('type', 'file');
                     input.setAttribute('accept', 'image/*');
 
@@ -500,7 +372,6 @@
                 branding: false
             });
 
-
             $('#create_record').on('click', function () {
 
                 $('#formModal').modal('show');
@@ -509,8 +380,9 @@
             $('#sample_form').on('submit', function (event) {
                 event.preventDefault();
 
+
                 $.ajax({
-                    url: "{{ route('clientTask.store') }}",
+                    url: "<?php echo e(route('clientProject.store')); ?>",
                     method: "POST",
                     data: new FormData(this),
                     contentType: false,
@@ -530,94 +402,20 @@
                             html = '<div class="alert alert-success">' + data.success + '</div>';
                             $('#sample_form')[0].reset();
                             $('select').selectpicker('refresh');
-                            $('#task-table').DataTable().ajax.reload();
+                            $('#client_project-table').DataTable().ajax.reload();
                         }
                         $('#form_result').html(html).slideDown(300).delay(5000).slideUp(300);
-                    }
-                });
-            });
-
-            $('#edit_sample_form').on('submit', function (event) {
-                event.preventDefault();
-
-                $.ajax({
-                    url: "{{ route('clientTask.update') }}",
-                    method: "POST",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    dataType: "json",
-                    success: function (data) {
-                        let html = '';
-                        if (data.errors) {
-                            html = '<div class="alert alert-danger">';
-                            for (var count = 0; count < data.errors.length; count++) {
-                                html += '<p>' + data.errors[count] + '</p>';
-                            }
-                            html += '</div>';
-                        }
-                        if (data.success) {
-                            html = '<div class="alert alert-success">' + data.success + '</div>';
-                            setTimeout(function () {
-                                $('#editModal').modal('hide');
-                                $('select').selectpicker('refresh');
-                                $('#client_task-table').DataTable().ajax.reload();
-                                $('#edit_sample_form')[0].reset();
-                            }, 2000);
-
-                        }
-                        $('#edit_form_result').html(html).slideDown(300).delay(5000).slideUp(300);
-                    }
-                });
-            });
-
-            function htmlDecode(input){
-                let e = document.createElement('div');
-                e.innerHTML = input;
-                return e.childNodes.length == 0 ? "" : e.childNodes[0].nodeValue;
-            }
-
-            $(document).on('click', '.edit', function () {
-
-                let id = $(this).attr('id');
-                $('#edit_form_result').html('');
-
-
-                let target = "{{ route('clientTask') }}/" + id + '/edit';
-
-                $.ajax({
-                    url: target,
-                    dataType: "json",
-                    success: function (html) {
-
-                        $('#edit_task_name').val(html.data.task_name);
-                        $('#edit_project_id').selectpicker('val', html.data.project_id);
-                        $('#edit_task_status').selectpicker('val', html.data.task_status);
-                        $('#edit_company_id').selectpicker('val', html.data.company_id);
-                        if (html.data.description) {
-                            tinymce.get('edit_description').setContent(htmlDecode(html.data.description));
-                        }
-                        $('#edit_start_date').val(html.data.start_date);
-                        $('#edit_end_date').val(html.data.end_date);
-                        $('#edit_task_hour').val(html.data.task_hour);
-
-
-                        $('#hidden_id').val(html.data.id);
-                        $('#editModal').modal('show');
                     }
                 })
             });
 
             $('.close').on('click', function () {
                 $('#sample_form')[0].reset();
-                $('#edit_sample_form')[0].reset();
-
-                $('select').selectpicker('refresh');
-                $('#client_task-table').DataTable().ajax.reload();
+                $('#client_project-table').DataTable().ajax.reload();
             });
-
+            
         })(jQuery); 
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\CRM\resources\views/client/project.blade.php ENDPATH**/ ?>

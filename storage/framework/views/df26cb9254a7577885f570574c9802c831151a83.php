@@ -491,6 +491,13 @@
 
 <?php $__env->stopSection(); ?>
 
+<style>
+#tasks-table, #discussions-table, #bugs-table, #files-table
+{
+    width:100% !important;
+}
+</style>
+
 <?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
     (function($) {

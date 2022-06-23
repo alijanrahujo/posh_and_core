@@ -1,11 +1,10 @@
 @extends('layout.client')
 @section('content')
 
-
     <section>
 
         <div class="table-responsive">
-            <table id="client_invoice-table" class="table ">
+            <table id="client_invoice-table" class="table">
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
@@ -22,7 +21,12 @@
             </table>
         </div>
     </section>
-
+<style>
+#client_invoice-table
+{
+    width:100% !important;
+}
+</style>
     <script type="text/javascript">
         (function($) {  
          
