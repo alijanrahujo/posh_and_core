@@ -293,7 +293,7 @@
                     </li>
                 @endif
 
-                @can('project-management')
+                @if(auth()->user()->role_users_id !=2)
                         <li class="has-dropdown {{ (request()->is('project-management*')) ? 'active' : '' }}">
                             @if(auth()->user()->can('view-project') || auth()->user()->can('view-task') || auth()->user()->can('client') || auth()->user()->can('view-invoice'))
                                 <a href="#Project_Management" aria-expanded="false" data-toggle="collapse">
@@ -333,7 +333,7 @@
                                 @endcan
                             </ul>
                         </li>
-                    @endcan
+                    @endif
 
                 @can('user')
                     <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('user*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">

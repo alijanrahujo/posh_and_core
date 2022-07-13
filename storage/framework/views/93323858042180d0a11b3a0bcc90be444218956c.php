@@ -297,7 +297,7 @@
                     </li>
                 <?php endif; ?>
 
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('project-management')): ?>
+                <?php if(auth()->user()->role_users_id !=2): ?>
                         <li class="has-dropdown <?php echo e((request()->is('project-management*')) ? 'active' : ''); ?>">
                             <?php if(auth()->user()->can('view-project') || auth()->user()->can('view-task') || auth()->user()->can('client') || auth()->user()->can('view-invoice')): ?>
                                 <a href="#Project_Management" aria-expanded="false" data-toggle="collapse">
